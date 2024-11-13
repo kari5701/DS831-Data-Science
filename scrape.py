@@ -18,7 +18,7 @@ for section in sections:
 
     for group in category_groups:
         group_letter = group.find("h3").text.strip()
-        # Only add songs if the group_letter starts with the current section letter
+        # adding songs if group_letter starts with the category letter
         if group_letter.startswith(section) or section == "0-9":
             links = group.find_all('a')
             for link in links:
@@ -74,11 +74,11 @@ def extract_song_details(url):
                     song_details["Producers"] = ', '.join(
                         part.strip() for part in value.get_text(separator=',').split(',') if part.strip())
 
-            if header and 'description' in header.get('class', []) and "Single by" in header.text:
+            if header and 'description' in header.get('class', []) and ("Single by" in header.text or "Song by" in header.text):
                 artist_links = header.find_all('a')
                 if artist_links:
                     song_details["Artist(s)"] = ', '.join(
-                        artist.text for artist in artist_links if artist.text != "Single")
+                        artist.text for artist in artist_links if artist.text not in ["Single", "Song"])
 
     return song_details
 
@@ -95,5 +95,5 @@ for song_title, song_url in all_songs:
     time.sleep(0.5)
 
 df = pd.DataFrame(all_song_details)
-df.to_csv('scrape_data.csv', index=False)
-print("Data has been saved to scrape_data.csv")
+df.to_csv('final_scrape.csv', index=False)
+print("Data has been saved to final_scrape.csv")
