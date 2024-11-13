@@ -21,13 +21,13 @@ for section in sections:
     # Parse the HTML content with BeautifulSoup
     soup = BeautifulSoup(html.text, 'html.parser')
 
-    # Find all category groups on the page (each group contains song links)
-    category_groups = soup.find_all('div', class_='mw-category-group')
+    # Find the first category group on the page (this group contains song links)
+    category_group = soup.find('div', class_='mw-category-group')  # Using find for a single group
 
-    # Loop through each category group to extract song links
-    for group in category_groups:
-        # Find all 'a' tags within the group (each represents a song link)
-        songs = group.find_all('a')
+    # Check if the category_group exists before processing
+    if category_group:
+        # Find all 'a' tags within this single group (each represents a song link)
+        songs = category_group.find_all('a')  # Use find_all to get all links within the first group
         for song in songs:
             # Get song title and URL from each 'a' tag
             song_title = song.get_text()
@@ -35,9 +35,7 @@ for section in sections:
             # Append the song title and URL as a tuple to all_songs
             all_songs.append((song_title, song_url))
 
-# Print the total number of songs collected
-print(f"Total songs collected: {len(all_songs)}")
-
+print(f"Total songs collected from the first group: {len(all_songs)}")
 
 # Function to extract details from an individual song page
 def extract_song_details(url):
