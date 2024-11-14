@@ -1,7 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-import time
 
 # Function to extract song details from individual song pages
 def extract_song_details(url):
