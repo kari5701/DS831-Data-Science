@@ -1,9 +1,8 @@
-import os
-import sys
-
 import requests
 import urllib
 from bs4 import BeautifulSoup
+import os
+import sys
 import pandas as pd
 import time
 
