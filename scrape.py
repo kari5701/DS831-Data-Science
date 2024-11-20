@@ -6,6 +6,10 @@ import sys
 import pandas as pd
 import time
 
+# Add functions directory
+sys.path.append(os.path.join(os.path.dirname(__file__), "scrape"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "data_clean"))
+
 # Base URL template for each letter section
 base_url = "https://en.wikipedia.org/w/index.php?title=Category:Billboard_Hot_100_number-one_singles&from="
 sections = ["0"]+[chr(i) for i in range(ord('A'), ord('Z') + 1)]
@@ -62,11 +66,7 @@ for url in urlList:
 
 print(f"Total song links collected: {len(all_songs)}")
 
-
-# Add functions directory
-sys.path.append(os.path.join(os.path.dirname(__file__), "scrape"))
-
-# Import the function
+# Import artist function
 from function_artist import extract_song_details
 
 
@@ -84,8 +84,10 @@ for song_title, song_url in all_songs:
 #Option to name output csv
 csv_name = "final_scrape3"
 
-
-
 df = pd.DataFrame(all_song_details)
 df.to_csv(f'{csv_name}.csv', index=False)
 print(f"{len(df)}Datapoints has been saved to {csv_name}.csv")
+
+# Import data_clean function
+from datacleanfunctions import remove_citations, remove_citationswcommas, remove_extra_commas
+
