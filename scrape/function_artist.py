@@ -53,8 +53,3 @@ def extract_song_details(url):
                     song_details["Artist(s)"] = ', '.join(artist.text for artist in artist_links if artist.text != "Single")
 
     return song_details
-
-# Example usage with one URL to test
-song_url = "https://en.wikipedia.org/wiki/Shallow_(Lady_Gaga_and_Bradley_Cooper_song)"
-song_data = extract_song_details(song_url)
-print(song_data)
