@@ -4,7 +4,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 # Directory containing HTML files
-html_dir = "/Users/karinachristensen/Documents/GitHub/DS831-Data-Science/billboard_articles"
+html_dir = "DS831-Data-Science/data/billboard_articles"
 
 # Import the custom function to extract song details from HTML
 from function_artist import extract_song_details
