@@ -46,10 +46,11 @@ def extract_song_details(url):
                     song_details["Producers"] = ', '.join(part.strip() for part in value.get_text(separator=',').split(',') if part.strip())
 
             # Look for artist information in the header with keywords indicating it's a single by certain artists
-            if header and 'description' in header.get('class', []) and "Single by" in header.text:
+            if header and 'description' in header.get('class', []) and ("Single by" in header.text or "Song by" in header.text):
                 # Only get the names from <a> tags within this header, excluding "Single"
                 artist_links = header.find_all('a')
                 if artist_links:
-                    song_details["Artist(s)"] = ', '.join(artist.text for artist in artist_links if artist.text != "Single")
+                    song_details["Artist(s)"] = ', '.join(
+                        artist.text for artist in artist_links if artist.text not in ["Single", "Song"])
 
     return song_details

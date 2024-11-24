@@ -36,7 +36,7 @@ for section in sections:
                 links = group.find_all('a')
                 for link in links:
                     href = link.get('href')
-                    if href:  # Only process if href exists
+                    if href:
                         full_url = "https://en.wikipedia.org" + href
                         song_title = link.text.strip()
                         all_songs.append((song_title, full_url))
