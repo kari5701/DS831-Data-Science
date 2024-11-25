@@ -50,7 +50,7 @@ final_scrape['Genres'] = final_scrape['Genres'].apply(remove_extra_commas)
 
 
 #Option to name output csv
-csv_name = "final_scrape18"
+csv_name = "final_scrape"
 
 
 
