@@ -1,4 +1,5 @@
-import urllib
+import urllib.error
+import urllib.request
 from bs4 import BeautifulSoup
 import os
 import sys
@@ -81,12 +82,9 @@ for song_title, song_url in all_songs:
     time.sleep(0.25)
 
 #Option to name output csv
-csv_name = "final_scrape3"
+csv_name = "final_scrape4"
 
 df = pd.DataFrame(all_song_details)
 df.to_csv(f'{csv_name}.csv', index=False)
 print(f"{len(df)}Datapoints has been saved to {csv_name}.csv")
-
-# Import data_clean function
-from datacleanfunctions import remove_citations, remove_citationswcommas, remove_extra_commas
 
