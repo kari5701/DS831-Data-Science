@@ -68,6 +68,7 @@ print(f"Total song links collected: {len(all_songs)}")
 # Import artist function
 from function_artist import extract_song_details
 
+
 all_song_details = []
 for song_title, song_url in all_songs:
     try:
@@ -88,6 +89,4 @@ print(f"{len(df)}Datapoints has been saved to {csv_name}.csv")
 
 # Import data_clean function
 from datacleanfunctions import remove_citations, remove_citationswcommas, remove_extra_commas
-
-
 
