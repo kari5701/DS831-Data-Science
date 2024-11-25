@@ -13,13 +13,13 @@ for filename in os.listdir(directory_path):
         filepath = os.path.join(directory_path, filename)
         details = extract_song_details_from_file(filepath)
         all_song_details.append(details)
-
-from datacleanfunctions import remove_citations, remove_citationswcommas, remove_extra_commas
+        print(f"Extracted data for: {filename}")
 
 # Save results to a CSV file
+csv_name = "html_scrape"
+
 df = pd.DataFrame(all_song_details)
-output_csv_path = 'song_details_with_artists1.csv'
-df.to_csv(output_csv_path, index=False)
+df.to_csv(f'{csv_name}.csv', index=False)
+print(f"{len(df)}Datapoints has been saved to {csv_name}.csv")
 
-print(f"Data extraction complete. Saved to {output_csv_path}")
-
+from datacleanfunctions import remove_citations, remove_citationswcommas, remove_extra_commas
