@@ -36,7 +36,7 @@ def remove_extra_commas(text):
 
 
 # import final scrape csv as dataframe
-final_scrape =  pd.read_csv('final_scrape.csv', encoding='utf-8')
+final_scrape =  pd.read_csv('html_scrape.csv', encoding='utf-8')
 
 
 # Apply the function to clean the 'Release Date' column
@@ -50,7 +50,7 @@ final_scrape['Genres'] = final_scrape['Genres'].apply(remove_extra_commas)
 
 
 #Option to name output csv
-csv_name = "final_scrape18"
+csv_name = "final_scrape"
 
 
 

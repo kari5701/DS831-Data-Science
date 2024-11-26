@@ -1,11 +1,4 @@
 from bs4 import BeautifulSoup
-import os
-import sys
-import pandas as pd
-
-# Add functions directory
-sys.path.append(os.path.join(os.path.dirname(__file__), "scrape"))
-sys.path.append(os.path.join(os.path.dirname(__file__), "data_clean"))
 
 def extract_song_details_from_file(filepath):
 
@@ -64,22 +57,3 @@ def extract_song_details_from_file(filepath):
                         artist.text for artist in artist_links if artist.text not in ["Single", "Song"])
 
     return song_details
-
-# HTML Directory
-directory_path = '/Users/karinachristensen/Documents/GitHub/DS831-Data-Science/data/billboard_articles'
-
-# Collect all song details
-all_song_details = []
-for filename in os.listdir(directory_path):
-    if filename.endswith('.html'):
-        filepath = os.path.join(directory_path, filename)
-        details = extract_song_details_from_file(filepath)
-        all_song_details.append(details)
-
-# Save results to a CSV file
-df = pd.DataFrame(all_song_details)
-output_csv_path = 'song_details_with_artists1.csv'
-df.to_csv(output_csv_path, index=False)
-
-print(f"Data extraction complete. Saved to {output_csv_path}")
-
