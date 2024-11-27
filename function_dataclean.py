@@ -5,7 +5,7 @@ import re
 def remove_citations(text):
     if pd.isna(text):  # Handle NaN values
         return text
-    return re.sub(r'\[\d+\]', '', text).strip()  # Removes [1], [2], etc.
+    return re.sub(r'\[\d+]', '', text).strip()  # Removes [1], [2], etc.
 
 
 # Function to clean citation markers from text
@@ -13,7 +13,7 @@ def remove_citationswcommas(text):
     if pd.isna(text):  # Handle NaN values
         return text
     # Match patterns like [1], [, 1, ], etc.
-    return re.sub(r'\[, \d+, ]|\[\d+\]', "", text).strip()
+    return re.sub(r'\[\d+]', '', text).strip()
 
 
 # Function to clean extra commas
@@ -35,7 +35,7 @@ def clean_song_lengths(df, column_name):
         length_str = str(length_str)
 
         # Split the versions using regex to handle different formats without explicit delimiters
-        versions = re.findall(r'\d+:\d+\s*\([^\)]+\)', length_str)
+        versions = re.findall(r'\d+:\d+\s*\([^)]+\)', length_str)
 
         # If there are no additional versions, just return the original length
         if not versions:

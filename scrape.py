@@ -23,4 +23,4 @@ df = pd.DataFrame(all_song_details)
 df.to_csv(f'{csv_name}.csv', index=False)
 print(f"{len(df)}Datapoints has been saved to {csv_name}.csv")
 
-from functions import remove_citations, remove_citationswcommas, remove_extra_commas, clean_song_lengths
+from function_dataclean import remove_citations, remove_citationswcommas, remove_extra_commas, clean_song_lengths
