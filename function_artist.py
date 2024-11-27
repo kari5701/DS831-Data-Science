@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 
-def extract_song_details_from_file(filepath):
+def song_details(filepath):
     # Read the local HTML file
     with open(filepath, 'r', encoding='utf-8') as file:
         soup = BeautifulSoup(file, 'html.parser')
