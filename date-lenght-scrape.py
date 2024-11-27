@@ -57,7 +57,7 @@ def clean_length(length):
         if match:
             return match.group(1)
 
-    # PRIORITY 2: Handle multiple parts (e.g., "Part 1, 2, 3")
+    # PRIORITY 2: clean multiple parts (e.g: "Part 1, 2, 3")
     if 'part' in length.lower():
         print(f'part in {length}')
         parts = re.split(r'[;/and]', length)  # Split on delimiters like ";", "/", or "and"
@@ -67,7 +67,7 @@ def clean_length(length):
                 if match:
                     return match.group(1)
 
-    # PRIORITY 3: Fallback to the first valid time
+    # PRIORITY 3: if no "single version or part version" fall back to the first valid time
     match = re.search(r'(\d+:\d{2})', length)  # Grab the first valid time if no "single version" or "part 1" exists
     if match:
         return match.group(1)
