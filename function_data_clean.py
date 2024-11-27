@@ -7,6 +7,7 @@ Created on Wed Nov 20 09:50:18 2024
 """
 import pandas as pd 
 import re
+import os
 
 # --- Clean the "Release Date" column ---
 
@@ -34,28 +35,32 @@ def remove_extra_commas(text):
     return cleaned_text.strip(', ')
 
 
-
 # import final scrape csv as dataframe
-final_scrape =  pd.read_csv('html_scrape.csv', encoding='utf-8')
+input_csv_name = "html_scrape"
 
+csv_path = os.path.normpath(os.path.join('data', f'{input_csv_name}.csv'))
+
+
+df =  pd.read_csv(csv_path, encoding='utf-8')
 
 # Apply the function to clean the 'Release Date' column
-final_scrape['Release Date'] = final_scrape['Release Date'].apply(remove_citations)
+df['Release Date'] = df['Release Date'].apply(remove_citations)
 
 # apply the function to clean the "Genres" column
-final_scrape['Genres'] = final_scrape['Genres'].apply(remove_citationswcommas) 
+df['Genres'] = df['Genres'].apply(remove_citationswcommas) 
 
 # Apply the function to clean the "Genres" column for extra commas
-final_scrape['Genres'] = final_scrape['Genres'].apply(remove_extra_commas)
+df['Genres'] = df['Genres'].apply(remove_extra_commas)
 
 
 #Option to name output csv
-csv_name = "final_scrape"
+output_csv_name = "final_scrape"
 
-
+output_csv_path = os.path.normpath(os.path.join('data', f'{output_csv_name}.csv'))
 
 # Save the cleaned data back to a CSV file
-final_scrape.to_csv(f'{csv_name}.csv', index=False)
-print(f"{len(final_scrape)} Datapoints has been saved to {csv_name}.csv")
+df.to_csv(os.path.normpath(f'{output_csv_path}'), index=False)
+
+print(f"{len(df)} rows has been cleaned and saved to {output_csv_name}.csv")
 
 
