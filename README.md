@@ -42,7 +42,7 @@ The project consists of two main components:
 To run the project, ensure the following tools are installed:
 
 - Python 3.8+
-- Required libraries: `BeautifulSoup`, `requests`, `pandas`.
+- Required libraries: `BeautifulSoup`, `requests`, `pandas`, 'pathlib', 're'.
 
 ## Setup and Usage
 

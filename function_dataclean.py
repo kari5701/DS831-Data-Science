@@ -1,5 +1,5 @@
 import pathlib
-import pandas as pd
+import pandas as pd 
 import re
 
 # Function to clean citation markers from text
@@ -38,23 +38,36 @@ def clean_song_lengths(df, column_name):
     df[column_name] = df[column_name].apply(extract_single_version)
     return df
 
+
+
+
 # Filepath for the existing file
 csv_path = pathlib.Path("data/html_scrape.csv")
 
 # Import existing scrape CSV as DataFrame
-final_scrape = pd.read_csv(csv_path, encoding='utf-8')
+df =  pd.read_csv(csv_path, encoding='utf-8')
 
 # Clean the 'Release Date' column
-final_scrape['Release Date'] = final_scrape['Release Date'].apply(remove_citations)
+df['Release Date'] = df['Release Date'].apply(remove_citations)
 
 # Clean the 'Genres' column
-final_scrape['Genres'] = final_scrape['Genres'].apply(remove_citationswcommas)
-final_scrape['Genres'] = final_scrape['Genres'].apply(remove_extra_commas)
+df['Genres'] = df['Genres'].apply(remove_citationswcommas) 
+
+# clean the "Genres" column for extra commas
+df['Genres'] = df['Genres'].apply(remove_extra_commas)
 
 # Clean the 'Length' column
-final_scrape = clean_song_lengths(final_scrape, 'Length')
+df['length'] = df['length'].apply(clean_song_lengths)
 
-# Overwrite the same file with cleaned data
-final_scrape.to_csv(csv_path, index=False)
+#Option to name output csv
+output_csv_name = "final_scrape"
 
-print(f"{len(final_scrape)} Datapoints have been updated, cleaned and saved to {csv_path}")
+output_csv_path = pathlib.Path("data") / output_csv_name
+
+
+# Save the cleaned data to a new CSV file
+df.to_csv(f'{output_csv_path}', index=False)
+
+print(f"{len(df)} rows has been cleaned and saved to {output_csv_path}.csv")
+
+
