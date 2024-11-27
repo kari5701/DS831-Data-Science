@@ -42,7 +42,7 @@ The project consists of two main components:
 To run the project, ensure the following tools are installed:
 
 - Python 3.8+
-- Required libraries: BeautifulSoup, requests, pandas
+- Required libraries: `BeautifulSoup`, `requests`, `pandas`.
 
 ## Setup and Usage
 
@@ -65,4 +65,4 @@ To run the project, ensure the following tools are installed:
    python scrape.py
   This script usees the Beautifull Soup function from `function_artist.py` to gather the following data: `name`, `artist(s)`, `relase date`, `genres`, `length`, `label`, `songwriters` and `producers`. The data is saved into a `.csv` file.
 
-  For data cleaning, `scrape.py` imports functionality from `function_dataclean.py at the bottom of the code.
+  For data cleaning, `scrape.py` imports functionality from `function_dataclean.py` at the bottom of the code.
