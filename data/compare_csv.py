@@ -3,15 +3,18 @@ import os
 
 # Load the datasets
 
+#the directory containing the files to compare
 directory_path = os.path.normpath('data')
 
+#Names of the CSV's
 CSV1_name = 'html_scrape.csv'
+CSV2_name = 'html_scrape_edited_artist_function.csv'
 
-CSV2_name = 'html_scrape_edited_artist_function.csv.csv'
-
+#Paths of the CSV's
 CSV1_path = os.path.normpath(os.path.join(directory_path, CSV1_name))
 CSV2_path = os.path.normpath(os.path.join(directory_path, CSV2_name))
 
+#Making dataframes of the CSV's
 CSV1_df = pd.read_csv(CSV1_path)
 CSV2_df = pd.read_csv(CSV2_path)
 
