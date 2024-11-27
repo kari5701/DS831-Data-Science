@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 
 def extract_song_details_from_file(filepath):
