@@ -1,8 +1,8 @@
 import pandas as pd
 
 # Load the datasets
-final_scrape_path = 'final_scrape.csv'
-song_details_with_artists_path = 'song_details_with_artists.csv'
+final_scrape_path = '/data/html_scrape.csv'
+song_details_with_artists_path = '/data/html_scrape_edited_artist_function.csv'
 
 final_scrape_df = pd.read_csv(final_scrape_path)
 song_details_with_artists_df = pd.read_csv(song_details_with_artists_path)
