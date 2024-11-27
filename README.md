@@ -63,6 +63,6 @@ To run the project, ensure the following tools are installed:
 3. Scrape the HTML files:
    ```bash
    python scrape.py
-  This script usees the Beautifull Soup function from `function_artist.py` to gather the following data: `name`, `artist(s)`, `relase date`, `genres`, `length`, `label`, `songwriters` and `producers`. The data is saved into a `.csv` file.
+  This script usees the Beautifull Soup function from `function_artist.py` to gather the following data: `name`, `artist(s)`, `relase date`, `genres`, `length`, `label`, `songwriters`, `producers', 'composers' and 'lyricists'. The data is saved into a `.csv` file.
 
   For data cleaning, `scrape.py` imports functionality from `function_dataclean.py` at the bottom of the code.
