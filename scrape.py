@@ -4,7 +4,6 @@ import pandas as pd
 from function_artist import extract_song_details_from_file
 
 # HTML Directory
-# Test test test test
 directory_path = 'billboard_articles'
 
 # Collect all song details
