@@ -1,15 +1,23 @@
 import pandas as pd
+import os
 
 # Load the datasets
-final_scrape_path = '/data/html_scrape.csv'
-song_details_with_artists_path = '/data/html_scrape_edited_artist_function.csv'
 
-final_scrape_df = pd.read_csv(final_scrape_path)
-song_details_with_artists_df = pd.read_csv(song_details_with_artists_path)
+directory_path = os.path.normpath('data')
+
+CSV1_name = 'html_scrape.csv'
+
+CSV2_name = 'html_scrape_edited_artist_function.csv.csv'
+
+CSV1_path = os.path.normpath(os.path.join(directory_path, CSV1_name))
+CSV2_path = os.path.normpath(os.path.join(directory_path, CSV2_name))
+
+CSV1_df = pd.read_csv(CSV1_path)
+CSV2_df = pd.read_csv(CSV2_path)
 
 # Extract the Title columns from both datasets
-titles_in_final_scrape = set(final_scrape_df['Title'].dropna())
-titles_in_song_details = set(song_details_with_artists_df['Title'].dropna())
+titles_in_final_scrape = set(CSV1_df['Title'].dropna())
+titles_in_song_details = set(CSV2_df['Title'].dropna())
 
 # Find common titles
 common_titles = titles_in_final_scrape.intersection(titles_in_song_details)
