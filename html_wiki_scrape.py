@@ -1,7 +1,7 @@
 import urllib.request
 import time
 from bs4 import BeautifulSoup
-import os
+import pathlib
 
 # Base URL template for each letter section
 base_url = "https://en.wikipedia.org/w/index.php?title=Category:Billboard_Hot_100_number-one_singles&from="
@@ -12,8 +12,7 @@ user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101
 headers = {'User-Agent': user_agent}
 
 # Directory to save the HTML files
-output_dir = "billboard_articles"
-os.makedirs(output_dir, exist_ok=True)
+directory = pathlib.Path('billboard_articles')
 
 # Collect all song links
 all_songs = []
@@ -60,7 +59,7 @@ for song_title, song_url in all_songs:
         if response.status == 200:
             # Create a safe filename
             safe_title = "".join(c if c.isalnum() else "_" for c in song_title)
-            filename = os.path.join(output_dir, f"{safe_title}.html")
+            filename = directory / f"{safe_title}.html"
 
             # Write the HTML content to a file
             with open(filename, 'w', encoding='utf-8') as file:
