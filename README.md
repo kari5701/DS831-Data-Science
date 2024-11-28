@@ -60,7 +60,7 @@ To run the project, ensure the following tools are installed:
    python html_wiki_scrape.py
   This will generate a directory called billboard_articles, containing the HTML for all the Billboard articles in separate files.
 
-3. Scrape the HTML files:
+4. Scrape the HTML files:
    ```bash
    python scrape.py
   This script usees the Beautifull Soup function from `function_artist.py` to gather the following data: `name`, `artist(s)`, `relase date`, `genres`, `length`, `label`, `songwriters`, `producers', 'composers' and 'lyricists'. The data is saved into a `.csv` file.
