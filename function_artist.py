@@ -51,15 +51,21 @@ def song_details(filepath):
                         song_details["Lyricist(s)"] = value.get_text(separator=', ').strip()
                     elif "Composer" in header_text:
                         song_details["Composer(s)"] = value.get_text(separator=', ').strip()
-
+                
                 # Extract artist(s) information
                 if header and 'description' in header.get('class', []) and (
                         "Single by" in header.text or "Song by" in header.text):
                     artist_links = header.find_all('a')
                     if artist_links:
-                        song_details["Artist(s)"] = ', '.join(
-                            artist.text for artist in artist_links if artist.text not in ["Single", "Song"])
+                        artist_names = []
+                        for artist in artist_links:
+                            if artist.text not in ["Single", "Song"]:
+                                artist_names.append(artist.text)
+                        song_details["Artist(s)"] = ', '.join(artist_names)
+        
             except Exception as e:
                 print(f"Error: {e} for URL: {filepath}")
 
     return song_details
+
+print(song_details('billboard_articles/_I_Can_t_Get_No__Satisfaction.html'))
