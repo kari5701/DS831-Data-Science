@@ -59,7 +59,7 @@ for song_title, song_url in all_songs:
         if response.status == 200:
             # Create a safe filename
             safe_title = "".join(c if c.isalnum() else "_" for c in song_title)
-            filename = os.path.join(output_dir, f"{safe_title}.html")
+            filename = directory / f"{safe_title}.html"
 
             # Write the HTML content to a file
             with open(filename, 'w', encoding='utf-8') as file:
