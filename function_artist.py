@@ -9,15 +9,15 @@ def song_details(filepath):
     # Initialize a dictionary to store song details
     song_details = {
         "Title": "",
-        "Artist(s)": "",
+        "Artists": "",
         "Release Date": "",
         "Genres": "",
         "Length": "",
         "Label": "",
         "Songwriters": "",
         "Producers": "",
-        "Lyricist(s)": "",
-        "Composer(s)": "",
+        "Lyricists": "",
+        "Composers": "",
     }
 
     # Extract the title
@@ -48,9 +48,9 @@ def song_details(filepath):
                     elif "Producer" in header_text:
                         song_details["Producers"] = value.get_text(separator=', ').strip()
                     elif "Lyricist" in header_text:
-                        song_details["Lyricist(s)"] = value.get_text(separator=', ').strip()
+                        song_details["Lyricists"] = value.get_text(separator=', ').strip()
                     elif "Composer" in header_text:
-                        song_details["Composer(s)"] = value.get_text(separator=', ').strip()
+                        song_details["Composers"] = value.get_text(separator=', ').strip()
                 
                 # Extract artist(s) information
                 if header and 'description' in header.get('class', []) and (
@@ -61,11 +61,9 @@ def song_details(filepath):
                         for artist in artist_links:
                             if artist.text not in ["Single", "Song"]:
                                 artist_names.append(artist.text)
-                        song_details["Artist(s)"] = ', '.join(artist_names)
+                        song_details["Artists"] = ', '.join(artist_names)
         
             except Exception as e:
                 print(f"Error: {e} for URL: {filepath}")
 
     return song_details
-
-print(song_details('billboard_articles/_I_Can_t_Get_No__Satisfaction.html'))
