@@ -23,6 +23,4 @@ df = pd.DataFrame(all_song_details)
 csv_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure 'data' directory exists
 df.to_csv(csv_path, index=False)
 
-print(f"{len(df)} rows of info has been saved to {csv_path}")
-
-from function_dataclean import remove_citations, remove_citationswcommas, remove_extra_commas, clean_song_lengths
+from function_dataclean import remove_citations, remove_citationswcommas, remove_extra_commas, clean_date, clean_song_lengths, remove_country_mentions, clean_multiline_commas
