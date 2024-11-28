@@ -8,18 +8,13 @@ def remove_citations(text):
         return text
     return re.sub(r'\[\d+]', '', text).strip()
 
-# Function to clean citation markers with commas
-def remove_citationswcommas(text):
-    if pd.isna(text):
-        return text
-    return re.sub(r'\[\d+]', '', text).strip()
 
-# Function to clean extra commas
-def remove_extra_commas(text):
+# Function to substitute linebreak with comma
+def sub_newline_w_commas(text):
     if pd.isna(text):
         return text
-    cleaned_text = re.sub(r' ,', '', text)
-    return cleaned_text.strip(', ')
+    cleaned_text = re.sub(r'\n', ',', text)
+    return cleaned_text
 
 # Function to clean the song lengths
 def clean_song_lengths(df, column_name):
