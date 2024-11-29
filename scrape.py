@@ -69,11 +69,13 @@ df['Songwriters'] = df['Songwriters'].str.replace(r'\[.*?\]', '', regex=True).st
 df['Producers'] = df['Producers'].str.replace(r'\[.*?\]', '', regex=True).str.replace(r'\s*,\s*', ', ', regex=True).str.strip(', ')
 df['Producers'] = df['Producers'].str.replace(r'\n+', '\n', regex=True).str.strip()
 
-# Merge 'Lyricist(s)' and 'Composer(s)' into 'Producers' column with linebreaks
-df['Producers'] = df['Lyricist(s)'].fillna('') + '\n' + df['Composer(s)'].fillna('')
+# Merge "Composer(s)" and "Lyricist(s)" into "Producers"
+df['Producers'] = df[df.columns[7:]].apply(
+    lambda x: ', '.join(x.dropna().astype(str)),
+    axis=1
+)
 
-# Drop the 'Lyricist(s)' and 'Composer(s)' columns
-df = df.drop(columns=['Lyricist(s)', 'Composer(s)'])
+df = df.drop(columns=[df.columns[8], df.columns[9]])
 
 # Save cleaned data to the same CSV file
 df.to_csv(csv_path, index=False)
