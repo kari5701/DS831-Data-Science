@@ -63,13 +63,13 @@ print(f'"{df_backup.iloc[8,4]}" cleaned to: \n"{df.iloc[8,4]}" and so on..\n')
 # Clean the "Genres" column
 print('Cleaning the "Genres" column:')
 
-
 df['Genres'] = df['Genres'].str.replace(r'\[.*?\]', '', regex=True)
 # df['Genres'] = df['Genres'].str.replace(r'\s*,\s*', ', ', regex=True).str.strip(', ')
 df['Genres'] = df['Genres'].str.replace(r',\s*,+', ', ', regex=True) # removing extra commas
 df['Genres'] = df['Genres'].str.replace(r',  ,', ',', regex=True)
 
 print(f'"{df_backup.iloc[5,3]}" cleaned to: \n"{df.iloc[5,3]}" and so on..\n')
+
 
 # Clean the "Label" column
 print('Cleaning the "Label" column:')
