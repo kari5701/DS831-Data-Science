@@ -23,7 +23,7 @@ def song_details(filepath):
     # Extract the title
     title_element = soup.find('h1', {"id": "firstHeading"})
     if title_element:
-        song_details["Title"] = title_element.text.strip()
+        song_details["Title"] = title_element.get_text(strip=True)
 
     # Defining the infobox
     infobox = soup.find('table', class_='infobox')
@@ -34,32 +34,39 @@ def song_details(filepath):
             try:
                 if header and value:
                     header_text = header.text.strip()
-
-                    if "Released" in header_text:
-                        song_details["Release Date"] = value.text.strip()
-                    elif "Genre" in header_text:
-                        song_details["Genres"] = value.text.strip()
-                    elif "Length" in header_text:
-                        song_details["Length"] = value.text.strip()
-                    elif "Label" in header_text:
-                        song_details["Label"] = value.text.strip()
-                    elif "Songwriter" in header_text:
-                        song_details["Songwriters"] = value.text.strip()
-                    elif "Producer" in header_text:
-                        song_details["Producers"] = value.text.strip()
-                    elif "Lyricist" in header_text:
-                        song_details["Lyricist(s)"] = value.text.strip()
-                    elif "Composer" in header_text:
-                        song_details["Composer(s)"] = value.text.strip()
-
-                # Extract artist(s) information
+                    try:
+                        if "Released" in header_text:
+                            song_details["Release Date"] = value.get_text(strip=True)
+                        elif "Genre" in header_text:
+                            song_details["Genres"] = value.get_text(separator=', ', strip = True)
+                        elif "Length" in header_text:
+                            song_details["Length"] = value.get_text(strip = True)
+                        elif "Label" in header_text:
+                            song_details["Label"] = value.get_text(separator=', ', strip = True)
+                        elif "Songwriter" in header_text:
+                            song_details["Songwriters"] = value.get_text(separator=', ', strip = True)
+                        elif "Producer" in header_text:
+                            song_details["Producers"] = value.get_text(separator=', ', strip = True)
+                        elif "Lyricist" in header_text:
+                            song_details["Lyricist(s)"] = value.get_text(separator=', ', strip = True)
+                        elif "Composer" in header_text:
+                            song_details["Composer(s)"] = value.get_text(separator=', ', strip = True)
+                    except Exception as e:
+                        print(f"Error: {e} for URL: {filepath}")
+                
                 if header and 'description' in header.get('class', []) and (
                         "Single by" in header.text or "Song by" in header.text):
                     artist_links = header.find_all('a')
                     if artist_links:
-                        song_details["Artist(s)"] = ', '.join(
-                            artist.text for artist in artist_links if artist.text not in ["Single", "Song"])
+                        artist_names = []
+                        for artist in artist_links:
+                            if artist.text not in ["Single", "Song"]:
+                                artist_names.append(artist.text)
+                        song_details["Artist(s)"] = ', '.join(artist_names)
             except Exception as e:
                 print(f"Error: {e} for URL: {filepath}")
 
     return song_details
+
+# Testbench:
+# print(song_details('billboard_articles/7_Rings.html'))
