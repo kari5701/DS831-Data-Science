@@ -99,9 +99,14 @@ print(f'"{df_backup.iloc[30,5]}" cleaned to: \n"{df.iloc[30,5]}" and so on..\n')
 # Clean the "Songwriters" column
 print('Cleaning the "Songwriters" column:')
 
-df['Songwriters'] = df['Songwriters'].str.replace(r'\[.*?\]', '', regex=True)
-df['Songwriters'] = df['Songwriters'].str.replace(r'\s*,\s*', ', ', regex=True)
-df['Songwriters'] = df['Songwriters'].str.replace(r',\s*,+', ', ', regex=True) # removing extra commas
+df['Songwriters'] = df['Songwriters'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
+df['Songwriters'] = df['Songwriters'].str.replace(r' and,', '', regex=True) # removing ocurrences of " and,"
+df['Songwriters'] = df['Songwriters'].str.replace(r' ,+', ', ', regex=True) # removing extra commas
+df['Songwriters'] = df['Songwriters'].str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
+df['Songwriters'] = df['Songwriters'].str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
+df['Songwriters'] = df['Songwriters'].str.replace(r'\W\W+', ', ', regex=True) # removing non word charector and more nonwordcharectorsand replacing with one comma and a space
+df['Songwriters'] = df['Songwriters'].str.rstrip(" ") # removing trailing spaces
+df['Songwriters'] = df['Songwriters'].str.rstrip(",") # removing trailing commas
 
 print(f'"{df_backup.iloc[79,6]}" cleaned to: \n"{df.iloc[79,6]}" and so on..\n')
 
