@@ -2,6 +2,10 @@ import pathlib
 import pandas as pd
 from function_artist import song_details
 import re
+from datetime import datetime
+
+'''Comment out from here to test second part
+'''
 
 # HTML Directory
 directory_path = pathlib.Path('billboard_articles')
@@ -24,13 +28,20 @@ df = pd.DataFrame(all_song_details)
 csv_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure 'data' directory exists
 df.to_csv(csv_path, index=False)
 
+
+
+'''Comment out to here to test second part 
+''' 
+
+
+
 # Filepath for the existing file
 csv_path = pathlib.Path("data/html_scrape.csv")
 
 # Import existing scrape CSV as DataFrame
 df = pd.read_csv(csv_path, encoding='utf-8')
 
-# create a backup
+# create a backup for safe measure, and to compare under the way.
 df_backup = df.copy()
 
 # Clean the 'Title' column
@@ -41,12 +52,24 @@ df['Title'] = df['Title'].str.replace(r'\([^)]*\)', '', regex=True)
 
 print(f'"{df_backup.iloc[8,0]}" cleaned to: \n"{df.iloc[8,0]}" and so on..\n')
 
-# Clean the 'Release Date' column
+# Clean the 'Release Date' column # We are still working on this part:
 df['Release Date'] = df['Release Date'].str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date'])
 df['Release Date'] = df['Release Date'].str.replace(r'\(.*?\)|\(\)', '', regex=True).str.strip()
 df['Release Date'] = df['Release Date'].str.replace(r'\[.*?\]', '', regex=True)
 df['Release Date'] = df['Release Date'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
 df['Release Date'] = pd.to_datetime(df['Release Date'], errors='coerce').dt.strftime('%B %d, %Y').fillna(df['Release Date'])
+
+# Standardize all dates to ISO 8601 format with to_datetime
+df['Release Date'] = pd.to_datetime(df['Release Date'], errors='coerce', dayfirst=True)
+
+# Extract components with DateTime: day, month, year etc.
+df['date'] = df['Release Date'].dt.date
+df['year'] = df['Release Date'].dt.year 
+df['month'] = df['Release Date'].dt.month
+
+# Export cleaned, structured data
+
+print(df.iloc[14,7:])
 
 print(f'"{df_backup.iloc[14,2]}" cleaned to: \n"{df.iloc[14,2]}" and so on..\n')
 
@@ -63,10 +86,9 @@ print(f'"{df_backup.iloc[8,4]}" cleaned to: \n"{df.iloc[8,4]}" and so on..\n')
 # Clean the "Genres" column
 print('Cleaning the "Genres" column:')
 
-df['Genres'] = df['Genres'].str.replace(r'\[.*?\]', '', regex=True)
-# df['Genres'] = df['Genres'].str.replace(r'\s*,\s*', ', ', regex=True).str.strip(', ')
+df['Genres'] = df['Genres'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
 df['Genres'] = df['Genres'].str.replace(r',\s*,+', ', ', regex=True) # removing extra commas
-df['Genres'] = df['Genres'].str.replace(r',  ,', ',', regex=True)
+df['Genres'] = df['Genres'].str.replace(r',  ,', ',', regex=True) # removing spaces
 
 print(f'"{df_backup.iloc[5,3]}" cleaned to: \n"{df.iloc[5,3]}" and so on..\n')
 
@@ -113,8 +135,15 @@ print('Dropping the "Lyricist(s)" and "Composer(s)" columns ')
 df = df.drop(columns=['Lyricist(s)', 'Composer(s)'])
 
 
-# Save cleaned data to the same CSV file
-df.to_csv(csv_path, index=False)
+# Option to name output CSV with an extension
+output_csv_name = "html_cleaned.csv"
+
+# Create filepath for saving CSV
+output_csv_path = pathlib.Path("data") / output_csv_name
+
+# Save cleaned data to the new CSV file
+df.to_csv(output_csv_path, index=False)
 
 
-print(f"{len(df)} rows have been updated, cleaned, and saved to {csv_path}")
+
+print(f"{len(df)} rows have been updated, cleaned, and saved to {output_csv_path}")
