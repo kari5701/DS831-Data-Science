@@ -54,12 +54,13 @@ print(f'"{df_backup.iloc[8,0]}" cleaned to: \n"{df.iloc[8,0]}" and so on..\n')
 # Clean the "Release Date" Column
 
 print('Cleaning the "Release Date" column:')
-df['Release Date'] = df['Release Date'].str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date']) #Removes anything after US, so as to exclude UK and Worldwide
-df['Release Date'] = df['Release Date'].str.replace(r'\(.*?\)|\(\)', '', regex=True).str.strip()
-df['Release Date'] = df['Release Date'].str.replace(r'\[.*?\]', '', regex=True) # Removes brackets
-df['Release Date'] = df['Release Date'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
-df['Release Date'] = df['Release Date'].str.replace(r'(?<=\d\d\d\d).*', '', regex=True).str.strip() # Removes anything after \d\d\d\d using positive lookaround
-df['DateMonthyear'] = pd.to_datetime(df['Release Date'], errors='coerce').dt.strftime('%d %m %Y').fillna(df['Release Date'])
+df['Release Date'] = (df['Release Date'].str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date']) #Removes anything after US, so as to exclude UK and Worldwide
+                      .str.replace(r'\(.*?\)|\(\)', '', regex=True).str.strip()
+                      .str.replace(r'\[.*?\]', '', regex=True) # Removes brackets
+                      .str.replace(r'\([^)]*\)', '', regex=True).str.strip()
+                      .str.replace(r'(?<=\d\d\d\d).*', '', regex=True).str.strip()) # Removes anything after \d\d\d\d using positive lookaround
+
+pd.to_datetime(df['Release Date'], errors='coerce').dt.strftime('%d %B %Y').fillna(df['Release Date']) # making dates uniform. 
 
 # Standardize all dates to ISO 8601 format with to_datetime
 #df['Release Date'] = pd.to_datetime(df['Release Date'], errors='coerce', dayfirst=True)
