@@ -46,24 +46,26 @@ df_backup = df.copy()
 print('Cleaning the "Title" column:')
 
 # Remove text within parentheses, including the parentheses
-df['Title'] = df['Title'].str.replace(r'\([^)]*\)', '', regex=True)
+df['Title'] = df['Title'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
 
 print(f'"{df_backup.iloc[8,0]}" cleaned to: \n"{df.iloc[8,0]}" and so on..\n')
 
-# Clean the 'Release Date' column #
-df['Release Date'] = df['Release Date'].str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date'])
+
+# Clean the "Release Date" Column
+
+print('Cleaning the "Release Date" column:')
+df['Release Date'] = df['Release Date'].str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date']) #Removes anything after US, so as to exclude UK and Worldwide
 df['Release Date'] = df['Release Date'].str.replace(r'\(.*?\)|\(\)', '', regex=True).str.strip()
-df['Release Date'] = df['Release Date'].str.replace(r'\[.*?\]', '', regex=True)
+df['Release Date'] = df['Release Date'].str.replace(r'\[.*?\]', '', regex=True) # Removes brackets
 df['Release Date'] = df['Release Date'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
-df['Release Date'] = pd.to_datetime(df['Release Date'], errors='coerce').dt.strftime('%Y %M, %D').fillna(df['Release Date'])
+df['Release Date'] = df['Release Date'].str.replace(r'(?<=\d\d\d\d).*', '', regex=True).str.strip() # Removes anything after \d\d\d\d using positive lookaround
+df['DateMonthyear'] = pd.to_datetime(df['Release Date'], errors='coerce').dt.strftime('%d %m %Y').fillna(df['Release Date'])
 
 # Standardize all dates to ISO 8601 format with to_datetime
-df['Release Date'] = pd.to_datetime(df['Release Date'], errors='coerce', dayfirst=True)
+#df['Release Date'] = pd.to_datetime(df['Release Date'], errors='coerce', dayfirst=True)
 
-print(df.dtypes)
-
+#print(df.dtypes)
 print(df.iloc[14,7:])
-
 print(f'"{df_backup.iloc[14,2]}" cleaned to: \n"{df.iloc[14,2]}" and so on..\n')
 
 # Clean song lengths to
@@ -79,11 +81,11 @@ print(f'"{df_backup.iloc[8,4]}" cleaned to: \n"{df.iloc[8,4]}" and so on..\n')
 # Clean the "Genres" column
 print('Cleaning the "Genres" column:')
 
-df['Genres'] = df['Genres'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
-df['Genres'] = df['Genres'].str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
-df['Genres'] = df['Genres'].str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
-df['Genres'] = df['Genres'].str.rstrip(" ") # removing trailing spaces
-df['Genres'] = df['Genres'].str.rstrip(",") # removing trailing commas
+df['Genres'] = (df['Genres'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
+                .str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
+                .str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
+                .str.rstrip(" ") # removing trailing spaces
+                .str.rstrip(",")) # removing trailing commas
 
 print(f'"{df_backup.iloc[5,3]}" cleaned to: \n"{df.iloc[5,3]}" and so on..\n')
 
@@ -99,9 +101,14 @@ print(f'"{df_backup.iloc[30,5]}" cleaned to: \n"{df.iloc[30,5]}" and so on..\n')
 # Clean the "Songwriters" column
 print('Cleaning the "Songwriters" column:')
 
-df['Songwriters'] = df['Songwriters'].str.replace(r'\[.*?\]', '', regex=True)
-df['Songwriters'] = df['Songwriters'].str.replace(r'\s*,\s*', ', ', regex=True)
-df['Songwriters'] = df['Songwriters'].str.replace(r',\s*,+', ', ', regex=True) # removing extra commas
+df['Songwriters'] = (df['Songwriters'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
+                     .str.replace(r' and,', '', regex=True) # removing ocurrences of " and,"
+                     .str.replace(r' ,+', ', ', regex=True) # removing extra commas
+                     .str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
+                     .str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
+                     .str.replace(r'\W\W+', ', ', regex=True) # removing non word charector and more nonwordcharectorsand replacing with one comma and a space
+                     .str.rstrip(" ") # removing trailing spaces
+                     .str.rstrip(",")) # removing trailing commas
 
 print(f'"{df_backup.iloc[79,6]}" cleaned to: \n"{df.iloc[79,6]}" and so on..\n')
 
@@ -109,24 +116,25 @@ print(f'"{df_backup.iloc[79,6]}" cleaned to: \n"{df.iloc[79,6]}" and so on..\n')
 # Clean the "Producers" column
 print('Cleaning the "Producers" column:')
 
-df['Producers'] = df['Producers'].str.replace(r'\[.*?\]', '', regex=True)
-df['Producers'] = df['Producers'].str.replace(r'\s*,\s*', ', ', regex=True).str.strip(', ')
-df['Producers'] = df['Producers'].str.replace(r'\n+', '\n', regex=True).str.strip()
+df['Producers'] = (df['Producers'].str.replace(r'\[.*?\]', '', regex=True) # Removing brackets
+                   .str.replace(r'\s*,\s*', ', ', regex=True).str.strip(', ')
+                   .str.replace(r'\n+', ', ', regex=True).str.strip()) #replacing "\n+", with ", "
 
 print(f'"{df_backup.iloc[72,7]}" cleaned to: \n"{df.iloc[72,7]}" and so on..\n')
 
 
 # Merge 'Lyricist(s)' and 'Composer(s)' into 'Producers' column with linebreaks
-print('Merging "Lyricist(s)" and "Composer(s)" into "Producers" column:')
+# print('Merging "Lyricist(s)" and "Composer(s)" into "Producers" column:')
 
-df['Producers'] = df['Lyricist(s)'].fillna('') + '\n' + df['Composer(s)'].fillna('')
+# df['Producers'] = df['Lyricist(s)'].fillna('') + '\n' + df['Composer(s)'].fillna('')
 
-print(f'"{df_backup.iloc[68,8]} "and"\n {df_backup.iloc[68,9]}" Merged to: \n"{df.iloc[68,7]}" and so on..\n')
+# print(f'"{df_backup.iloc[68,8]} "and"\n {df_backup.iloc[68,9]}" Merged to: \n"{df.iloc[68,7]}" and so on..\n')
 
 
-print('Dropping the "Lyricist(s)" and "Composer(s)" columns ')
-# Drop the 'Lyricist(s)' and 'Composer(s)' columns
-df = df.drop(columns=['Lyricist(s)', 'Composer(s)'])
+
+# print('Dropping the "Lyricist(s)" and "Composer(s)" columns ')
+# # Drop the 'Lyricist(s)' and 'Composer(s)' columns
+# df = df.drop(columns=['Lyricist(s)', 'Composer(s)'])
 
 
 # Create filepath for saving CSV
