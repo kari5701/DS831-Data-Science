@@ -85,6 +85,7 @@ print('Cleaning the "Genres" column:')
 df['Genres'] = (df['Genres'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
                 .str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
                 .str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
+                .str.replace(r'-,\s', '', regex=True) # remove '-, ' 
                 .str.rstrip(" ") # removing trailing spaces
                 .str.rstrip(",")) # removing trailing commas
 
