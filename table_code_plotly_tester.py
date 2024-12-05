@@ -24,7 +24,7 @@ fig = go.Figure(data=[go.Table(
 import plotly.io as pio
 pio.renderers.default = 'browser'  # Set the renderer to open in your browser
 
-fig.show()  # Now it should open the table in your default web browser
+fig.show() 
 
 # Display the table
 fig.show()
