@@ -1,3 +1,5 @@
 .DS_Store
 __pycache__/
 .DS_Store
+dash_ui/node_modules
+
