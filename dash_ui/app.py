@@ -16,27 +16,51 @@ constants = get_constants(cleaned_data)
 # Initialize the Dash app
 app = Dash(__name__)
 
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dash med Tailwind</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-gray-100 font-sans">
+    <div id="react-entry-point">
+        {%app_entry%}
+    </div>
+    <footer>
+        {%config%}
+        {%scripts%}
+        {%renderer%}
+    </footer>
+</body>
+</html>
+'''
+
 # Define app layout, including the components from dash1
 app.layout = html.Div([
-    html.H1("Billboard Artist Top 100"),
+    html.Div([
+        html.Div(html.Img(src="./assets/Billboard_logo.png", width=150), className="w-1/6"),
+        html.H1("Billboard Artist Hot 100", className="text-3xl font-bold mb-4 text-center text-gray-800"),
+    ], className="flex items-center space-x-4 mb-10 bg-white p-4 rounded-lg shadow-md"),
 
     # Including the visualization from dash1 module
-    create_grid(cleaned_data),
+    html.Div(create_grid(cleaned_data), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
 
     # Dropdown for Genres (for demonstration purposes)
     dcc.Dropdown(
         id='genre-dropdown',
         options=[{'label': genre, 'value': genre} for genre in cleaned_data['Genres'].dropna().unique()],
         placeholder='Select a genre',
-        multi=False
+        multi=False,
+        className="mb-5 p-2 border border-gray-300 rounded w-full"
     ),
 
     # Wordcloud Placeholder
-    dcc.Graph(id='wordcloud-graph'),
+    dcc.Graph(id='wordcloud-graph', className="mb-5 bg-white p-4 rounded-lg shadow-md"),
 
     # Histogram Placeholder
-    dcc.Graph(id='length-histogram')
-])
+    dcc.Graph(id='length-histogram', className="bg-white p-4 rounded-lg shadow-md")
+], className="container mx-auto p-6 bg-gray-50")
 
 # Define callback to link dropdown selection to data grid filtering
 @app.callback(
