@@ -7,7 +7,7 @@ import io
 import base64
 
 # Load the dataset
-csv_path = pathlib.Path("/Users/karinachristensen/Documents/GitHub/DS831-Data-Science/data/html_cleaned.csv")
+csv_path = pathlib.Path("data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 
 # Generate wordcloud image

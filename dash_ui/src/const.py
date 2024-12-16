@@ -1,4 +1,5 @@
 import pandas as pd
+import pathlib
 
 def get_constants(df):
     num_of_songs = df.shape[0]
@@ -32,7 +33,9 @@ def get_constants(df):
     }
 
 # Load the cleaned dataset
-cleaned_data = pd.read_csv('/Users/karinachristensen/Documents/GitHub/DS831-Data-Science/data/html_cleaned.csv')
+csv_path = pathlib.Path("data/html_cleaned.csv")
+cleaned_data = pd.read_csv(csv_path)
+
 constants = get_constants(cleaned_data)
 
 # Eksempel på brug af konstanter
