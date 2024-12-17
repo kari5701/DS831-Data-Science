@@ -62,14 +62,15 @@ print(f'"{df_backup.iloc[8,0]}" cleaned to: \n"{df.iloc[8,0]}" and so on..\n')
 ## Clean the "Release Date" Column
 
 print('Cleaning the "Release Date" column:')
-df['Release Date'] = (df['Release Date'].str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date']) #Removes anything after US, so as to exclude UK and Worldwide
-                                        .str.replace(r'\(.*?\)|\(\)', '', regex=True).str.strip()
-                                        .str.replace(r'\[.*?\]', '', regex=True) # Removes brackets
-                                        .str.replace(r'\([^)]*\)', '', regex=True).str.strip()
-                                        .str.replace(r'(?<=\d{4}}).*', '', regex=True).str.strip() # Removes anything after \d\d\d\d using positive lookbehind
-                                        .str.replace(r'(\d{1,2})\s([A-Za-z]+)\s(\d{4})', r'\2 \1, \3', regex=True) # Identifies strings of "date month year"
-                                                                                                                    # and rearranges them
-                                        .str.replace(r'(?<=[A-Za-z]\s)(?=\d{4})', '1, ', regex=True)) # Identifies places with "month year" and inserts "1, "
+df['Release Date'] = (df['Release Date']
+                      .str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date']) #Removes anything after US, so as to exclude UK and Worldwide
+                      .str.replace(r'\(.*?\)|\(\)', '', regex=True).str.strip() # Removes parenthesis
+                      .str.replace(r'\[.*?\]', '', regex=True) # Removes brackets
+                      .str.replace(r'\([^)]*\)', '', regex=True).str.strip()
+                      .str.replace(r'(?<=\d{4}}).*', '', regex=True).str.strip() # Removes anything after \d\d\d\d using positive lookbehind
+                      .str.replace(r'(\d{1,2})\s([A-Za-z]+)\s(\d{4})', r'\2 \1, \3', regex=True) # Identifies strings of "date month year" and rearranges them
+                      .str.replace(r'(?<=[A-Za-z]\s)(?=\d{4})', '1, ', regex=True)  # Identifies places with "month year" and inserts "15, "
+                      .str.replace(r'^(?=\d{4}$)', 'June 1, ', regex=True)) #Identifies places with only "year" and inserts  "June 1, "
 
 
 # Standardize all dates to ISO 8601 format with to_datetime
@@ -92,12 +93,13 @@ print(f'"{df_backup.iloc[8,4]}" cleaned to: \n"{df.iloc[8,4]}" and so on..\n')
 ## Clean the "Genres" column
 print('Cleaning the "Genres" column:')
 
-df['Genres'] = (df['Genres'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
-                            .str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
-                            .str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
-                            .str.replace(r'-,\s', '', regex=True) # remove '-, ' 
-                            .str.rstrip(" ") # removing trailing spaces
-                            .str.rstrip(",")) # removing trailing commas
+df['Genres'] = (df['Genres']
+                .str.replace(r'\[.*?\]', '', regex=True) # removing brackets
+                .str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
+                .str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
+                .str.replace(r'-,\s', '', regex=True) # remove '-, ' 
+                .str.rstrip(" ") # removing trailing spaces
+                .str.rstrip(",")) # removing trailing commas
                             
 
 
@@ -107,25 +109,34 @@ print(f'"{df_backup.iloc[5,3]}" cleaned to: \n"{df.iloc[5,3]}" and so on..\n')
 ## Clean the "Label" column
 print('Cleaning the "Label" column:')
 
-df['Label'] = df['Label'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
-df['Label'] = df['Label'].str.replace(r',\s*,+', ', ', regex=True) # removing extra commas
 
-print(f'"{df_backup.iloc[30,5]}" cleaned to: \n"{df.iloc[30,5]}" and so on..\n')
+df['Label'] = (df['Label']
+               .str.replace(r'\(US.*', '', regex=True) # Remove anything after 'US'
+               .str.replace(r'.*?UK\)', '', regex=True) # Remove anything before and including 'UK'
+               .str.replace(r'\[.*?\]', '', regex=True) # removing brackets
+               .str.replace(r'\(.*?\)', '', regex=True) # Remove content in parenthesis
+               .str.replace(r',\s*,+', ', ', regex=True) # Clean up extra commas and spaces
+               .str.strip(',') # Remove trailing/leading commas           
+               .str.strip() # Remove trailing/leading whitespace
+              )
+
+print(f'"{df_backup.iloc[492,5]}" cleaned to: \n"{df.iloc[492,5]}" and so on..\n')
 
 ## Clean the "Songwriters" column
 print('Cleaning the "Songwriters" column:')
 
-df['Songwriters'] = (df['Songwriters'].str.replace(r'\[.*?\]', '', regex=True) # removing brackets
-                                    .str.replace(r' and,', '', regex=True) # removing ocurrences of " and,"
-                                    .str.replace(r' ,+', ', ', regex=True) # removing extra commas
-                                    .str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
-                                    .str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
-                                    .str.replace(r'\W\W+', ', ', regex=True) # removing non word charector and more nonwordcharectorsand replacing with one comma and a space
-                                    .str.rstrip(" ") # removing trailing spaces
-                                    .str.rstrip(",")) # removing trailing commas
+df['Songwriters'] = (df['Songwriters']
+                     .str.replace(r'\[.*?\]', '', regex=True) # removing brackets
+                    .str.replace(r' and,', '', regex=True) # removing ocurrences of " and,"
+                    .str.replace(r' ,+', ', ', regex=True) # removing extra commas
+                    .str.replace(r',\s', ',', regex=True) # removing extra commas substituting with a comma
+                    .str.replace(r',+', ', ', regex=True) # removing more than one comma and replacing with one comma and a space
+                    .str.replace(r'\W\W+', ', ', regex=True) # removing non word charector and more nonwordcharectorsand replacing with one comma and a space
+                    .str.rstrip(" ") # removing trailing spaces
+                    .str.rstrip(",")) # removing trailing commas
 
 
-print(f'returning: \n"{df.iloc[144,6]}" and so on..\n')
+print(f'returning: \n"{df.iloc[147,6]}" and so on..\n')
 
 print(f'"{df_backup.iloc[79,6]}" cleaned to: \n"{df.iloc[79,6]}" and so on..\n')
 
@@ -146,11 +157,12 @@ print(f'"resulting in:\n"{df.iloc[144,7]}"\n')
 # Clean the "Producers" column
 print('Cleaning the "Producers" column:')
 
-df['Producers'] = (df['Producers'].str.replace(r'\[.*?\]', '', regex=True) # Removing brackets
-                                .str.replace(r'\s*,\s*', ', ', regex=True).str.strip(', ')
-                                .str.replace(r'\n+', ', ', regex=True).str.strip() #replacing "\n+", with ", "
-                                .str.replace(r',\s,\s', ', ', regex=True) # removing extra commas substituting with a comma
-                                .str.replace(r',\s,\s', ', ', regex=True)) # removing extra commas substituting with a comma
+df['Producers'] = (df['Producers']
+                   .str.replace(r'\[.*?\]', '', regex=True) # Removing brackets
+                   .str.replace(r'\s*,\s*', ', ', regex=True).str.strip(', ')
+                   .str.replace(r'\n+', ', ', regex=True).str.strip() #replacing "\n+", with ", "
+                   .str.replace(r',\s,\s', ', ', regex=True) # removing extra commas substituting with a comma
+                   .str.replace(r',\s,\s', ', ', regex=True)) # removing extra commas substituting with a comma
 
 print(f'"{df_backup.iloc[144,7]}" cleaned to: \n"{df.iloc[144,7]}" and so on..\n')
 

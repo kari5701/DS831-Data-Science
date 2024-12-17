@@ -46,4 +46,4 @@ def print_constants(constants):
     print(f"Antal producenter: {constants['num_of_producers']}")
     print(f"Antal sangskrivere: {constants['num_of_songwriters']}")
 
-print_constants(constants)
+# print_constants(constants)
