@@ -1,4 +1,5 @@
 import pandas as pd
+import pathlib
 
 def get_constants(df):
     num_of_songs = df.shape[0]
@@ -9,7 +10,7 @@ def get_constants(df):
     artists = df['Artist(s)'].str.split(',').explode().value_counts().index
     num_of_artists = len(artists)
 
-    artists = df['Length'].str.split(',').explode().value_counts().index
+    length = df['Length'].str.split(',').explode().value_counts().index
     num_of_length = len(artists)
 
     producers = df['Producers'].str.split(',').explode().value_counts().index
@@ -32,7 +33,9 @@ def get_constants(df):
     }
 
 # Load the cleaned dataset
-cleaned_data = pd.read_csv('/Users/karinachristensen/Documents/GitHub/DS831-Data-Science/data/html_cleaned.csv')
+csv_path = pathlib.Path("data/html_cleaned.csv")
+cleaned_data = pd.read_csv(csv_path)
+
 constants = get_constants(cleaned_data)
 
 # Eksempel på brug af konstanter
@@ -43,4 +46,4 @@ def print_constants(constants):
     print(f"Antal producenter: {constants['num_of_producers']}")
     print(f"Antal sangskrivere: {constants['num_of_songwriters']}")
 
-print_constants(constants)
+# print_constants(constants)

@@ -10,7 +10,8 @@ from src.dash1 import create_grid
 from src.dash3 import create_histogram
 
 # Load the CSV file into a DataFrame
-csv_path = pathlib.Path("/Users/karinachristensen/Documents/GitHub/DS831-Data-Science/data/html_cleaned.csv")
+
+csv_path = pathlib.Path("data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 
 # Get constants from the data
