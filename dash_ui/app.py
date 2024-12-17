@@ -11,7 +11,7 @@ from src.dash3 import create_histogram
 
 # Load the CSV file into a DataFrame
 
-csv_path = pathlib.Path("data/html_cleaned.csv")
+csv_path = pathlib.Path("../data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 
 # Get constants from the data
