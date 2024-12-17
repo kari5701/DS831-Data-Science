@@ -2,20 +2,17 @@ from dash import Dash, html, dcc, Input, Output
 import pandas as pd
 import pathlib
 
-from tornado.options import options
-
-# Import constants
-from src.const import get_constants
+# Import WordCloud-komponent og grid
+from dash_ui.src.dash2 import create_wordcloud
+from src.const import clean_genres, KEYWORDS
 from src.dash1 import create_grid
-from src.dash3 import create_histogram
 
 # Load the CSV file into a DataFrame
-
-csv_path = pathlib.Path("data/html_cleaned.csv")
+csv_path = pathlib.Path("../data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 
-# Get constants from the data
-constants = get_constants(cleaned_data)
+# Genre List
+GENRES = clean_genres(cleaned_data, KEYWORDS)
 
 # Initialize the Dash app
 app = Dash(__name__)
@@ -42,48 +39,49 @@ app.index_string = '''
 </html>
 '''
 
-# Define app layout, including the components from dash1
+# Define app layout
 app.layout = html.Div([
+    # Header
     html.Div([
         html.Div(html.Img(src="./assets/Billboard_logo.png", width=150), className="w-1/6"),
         html.H1("Billboard Artist Hot 100", className="text-3xl font-bold mb-4 text-center text-gray-800"),
     ], className="flex items-center space-x-4 mb-10 bg-white p-4 rounded-lg shadow-md"),
 
-    # Including the visualization from dash1 module
+    # Grid Component
     html.Div(create_grid(cleaned_data), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
 
-    # Dropdown for Genres (for demonstration purposes)
+    # Dropdown for Genres
     dcc.Dropdown(
         id='genre-dropdown',
-        options=[{'label': genre, 'value': genre} for genre in cleaned_data['Genres'].dropna().unique()],
+        options=[{'label': genre, 'value': genre} for genre in GENRES],
         placeholder='Select a genre',
-        multi=False,
-        className="mb-5 p-2 border border-gray-300 rounded w-full"
+        multi=True,
+        className="mb-5 p-2 border border-gray-300 rounded w-full",
     ),
 
-    # Wordcloud Placeholder
-    dcc.Graph(id='wordcloud-graph', className="mb-5 bg-white p-4 rounded-lg shadow-md"),
-
-    # Histogram Placeholder
-    create_histogram(cleaned_data),
+    # WordCloud Component
+    html.Div(create_wordcloud(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md")
 ], className="container mx-auto p-6 bg-gray-50")
 
-
-# Define callback to link dropdown selection to data grid filtering
+# Define callback to update AgGrid based on dropdown or WordCloud click
 @app.callback(
-    Output("getting-started-sort", 'rowData'),  # Output targets the AgGrid component by ID
-    Input('genre-dropdown', 'value')  # Input is the genre dropdown value
+    Output("getting-started-sort", 'rowData'),
+    [Input('genre-dropdown', 'value'),
+     Input("wordcloud-graph", "clickData")]
 )
+def update_grid(selected_genre, clickData):
+    filtered_data = cleaned_data
 
-def update_grid(selected_genre):
-    if not selected_genre:
-        return cleaned_data.to_dict('records')
+    # Filter by dropdown selection
+    if selected_genre:
+        filtered_data = filtered_data[filtered_data['Genres'].str.contains(selected_genre, case=False, na=False)]
 
-    # Filter data based on selected genre
-    filtered_data = cleaned_data[cleaned_data['Genres'].str.contains(selected_genre, case=False, na=False)]
+    # Filter by WordCloud click
+    if clickData:
+        selected_word = clickData['points'][0]['text']
+        filtered_data = filtered_data[filtered_data['Genres'].str.contains(selected_word, case=False, na=False)]
+
     return filtered_data.to_dict('records')
-
-
 
 # Run the Dash app
 if __name__ == '__main__':
