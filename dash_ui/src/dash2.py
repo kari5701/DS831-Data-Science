@@ -1,35 +1,41 @@
-from dash1 import html, dcc
+from dash import dcc, html
 import pandas as pd
-import pathlib
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-import io
-import base64
+import plotly.express as px
 
-# Load the dataset
-csv_path = pathlib.Path("data/html_cleaned.csv")
-cleaned_data = pd.read_csv(csv_path)
+# Funktion til at forberede data til WordCloud
+def prepare_wordcloud_data(df, keywords):
+    genres = []
+    for cell in df['Genres'].dropna():
+        for genre in cell.replace("-", " ").split(", "):
+            for keyword in keywords:
+                if keyword in genre.lower():
+                    genres.append(keyword.capitalize())
+    return pd.DataFrame({'Genre': genres}).value_counts().reset_index(name='Count')
 
-# Generate wordcloud image
-def generate_wordcloud(data):
-    genres_text = ' '.join(data['Genres'].dropna().astype(str))
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(genres_text)
+# Funktion til at lave WordCloud
+def create_wordcloud(data, keywords):
+    wordcloud_data = prepare_wordcloud_data(data, keywords)
 
-    # Save to a buffer
-    buffer = io.BytesIO()
-    wordcloud.to_image().save(buffer, format='PNG')
-    buffer.seek(0)
+    fig = px.scatter(
+        wordcloud_data,
+        x='Genre',  # Navngiv tydeligt kolonnen
+        y='Count',
+        size='Count',
+        text='Genre',
+        size_max=100,
+        hover_data={'Genre': True, 'Count': True}
+    )
 
-    # Encode image to base64 for display in Dash
-    encoded_image = base64.b64encode(buffer.read()).decode('utf-8')
-    return f"data:image/png;base64,{encoded_image}"
+    fig.update_traces(
+        textposition='middle center',
+        hovertemplate='<b>%{text}</b><br>Count: %{customdata[1]}<extra></extra>'
+    )
 
-# Create the wordcloud layout
-wordcloud_image = generate_wordcloud(cleaned_data)
+    fig.update_layout(
+        showlegend=False,
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False),
+        margin=dict(l=10, r=10, t=10, b=10)
+    )
 
-layout = html.Div([
-    html.H3("Genres Wordcloud"),
-    html.Img(src=wordcloud_image, id='wordcloud-img', style={'width': '80%', 'height': 'auto'}),
-    dcc.Store(id='selected-genre', data=None)  # Store for storing the selected genre from wordcloud
-])
-
+    return dcc.Graph(id="wordcloud-graph", figure=fig)
