@@ -2,9 +2,12 @@ from dash import Dash, html, dcc, Input, Output
 import pandas as pd
 import pathlib
 
+from tornado.options import options
+
 # Import constants
 from src.const import get_constants
 from src.dash1 import create_grid
+from src.dash3 import create_histogram
 
 # Load the CSV file into a DataFrame
 csv_path = pathlib.Path("/Users/karinachristensen/Documents/GitHub/DS831-Data-Science/data/html_cleaned.csv")
@@ -20,8 +23,10 @@ app.index_string = '''
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dash med Tailwind</title>
+    <title>Billboard Hot 100</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Syne:wght@400..800&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans">
     <div id="react-entry-point">
@@ -59,7 +64,7 @@ app.layout = html.Div([
     dcc.Graph(id='wordcloud-graph', className="mb-5 bg-white p-4 rounded-lg shadow-md"),
 
     # Histogram Placeholder
-    dcc.Graph(id='length-histogram', className="bg-white p-4 rounded-lg shadow-md")
+    create_histogram(cleaned_data),
 ], className="container mx-auto p-6 bg-gray-50")
 
 # Define callback to link dropdown selection to data grid filtering

@@ -6,7 +6,11 @@ module.exports = {
     './**/*.py',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+                sans: ['Montserrat', 'sans-serif'],
+            },
+    },
   },
   plugins: [],
 }

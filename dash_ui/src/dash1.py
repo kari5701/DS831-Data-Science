@@ -26,7 +26,8 @@ defaultColDef = {
     "sortable": True,  # Enables sorting for all columns
     "wrapHeaderText": True,  # Wraps header text if it's too long
     "autoHeaderHeight": True,  # Automatically adjusts header height
-    "initialWidth": 125,  # Sets the initial width of the columns
+    "initialWidth": True,
+    "resizable": True,
 }
 
 # Function to create a grid layout
@@ -38,4 +39,7 @@ def create_grid(data):
         defaultColDef=defaultColDef,  # Apply the default column settings
         dashGridOptions={'pagination': True},
     )
-    return html.Div([grid])
+    return html.Div(
+        [grid],
+        className="p-4 sm:p-2 md:p-6 bg-gray-100 flex flex-col items-center"
+    )
