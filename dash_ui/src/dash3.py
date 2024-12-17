@@ -7,10 +7,11 @@ def create_histogram(data):
     # Create the histogram using Plotly Express
     fig = px.histogram(
         data,
-        x="Length",
-        nbins=30,  # Adjust the number of bins as needed
+        x="total_seconds",
         labels={"Length": "Song Length (seconds)"},
-        title="Distribution of Song Lengths"
+        title="Distribution of Song Lengths",
+        hover_data=data.columns,
+        marginal="rug",
     )
     fig.update_layout(
         xaxis_title="Length (seconds)",

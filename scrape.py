@@ -2,6 +2,7 @@ import pathlib
 import pandas as pd
 from function_artist import song_details
 import re
+from datetime import time
 from datetime import datetime
 
 '''Comment out from here to test second part'''
@@ -63,7 +64,8 @@ print(f'"{df_backup.iloc[8,0]}" cleaned to: \n"{df.iloc[8,0]}" and so on..\n')
 
 print('Cleaning the "Release Date" column:')
 df['Release Date'] = (df['Release Date']
-                      .str.extract(r'(.*?)(?=\s*\(US\))')[0].fillna(df['Release Date']) #Removes anything after US, so as to exclude UK and Worldwide
+                      .str.replace(r'\(US.*', '', regex=True) # Remove anything after 'US'
+                      .str.replace(r'.*?UK\)', '', regex=True) # Remove anything before and including 'UK'
                       .str.replace(r'\(.*?\)|\(\)', '', regex=True).str.strip() # Removes parenthesis
                       .str.replace(r'\[.*?\]', '', regex=True) # Removes brackets
                       .str.replace(r'\([^)]*\)', '', regex=True).str.strip()
@@ -77,6 +79,7 @@ df['Release Date'] = (df['Release Date']
 df['Release Date'] = pd.to_datetime(df['Release Date'], errors='coerce', dayfirst=True)
 
 print(f'converting datatype of {"Release Date"} column to {df.dtypes["Release Date"]}')
+print(f'"{df_backup.iloc[196,2]}" cleaned to: \n"{df.iloc[196,2]}",')
 
 print(f'"{df_backup.iloc[14,2]}" cleaned to: \n"{df.iloc[14,2]}" and so on..\n')
 
@@ -86,6 +89,17 @@ print('Cleaning the "Length" column:')
 # extract single version length or the first time match
 df['Length'] = df['Length'].str.extract(r'(\d+:\d+)\s*\(.*?single version.*?\)', re.IGNORECASE)[0].fillna(
     df['Length'].str.extract(r'(\d+:\d+)')[0].fillna(df['Length']))
+
+
+# Standardize all time to ISO 8601 format with to_datetime
+df['total_seconds'] = pd.to_datetime(df['Length'], format='%M:%S', errors='coerce')
+
+df['Minutes'] = df.total_seconds.dt.minute
+df['Seconds'] = df.total_seconds.dt.second
+
+df['total_seconds'] = df['Minutes']*60 + df['Seconds']
+
+df = df.drop(columns=['Minutes', 'Seconds'])
 
 print(f'"{df_backup.iloc[8,4]}" cleaned to: \n"{df.iloc[8,4]}" and so on..\n')
 

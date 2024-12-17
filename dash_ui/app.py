@@ -11,7 +11,7 @@ from src.dash3 import create_histogram
 
 # Load the CSV file into a DataFrame
 
-csv_path = pathlib.Path("../data/html_cleaned.csv")
+csv_path = pathlib.Path("data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 
 # Get constants from the data
@@ -68,11 +68,13 @@ app.layout = html.Div([
     create_histogram(cleaned_data),
 ], className="container mx-auto p-6 bg-gray-50")
 
+
 # Define callback to link dropdown selection to data grid filtering
 @app.callback(
     Output("getting-started-sort", 'rowData'),  # Output targets the AgGrid component by ID
     Input('genre-dropdown', 'value')  # Input is the genre dropdown value
 )
+
 def update_grid(selected_genre):
     if not selected_genre:
         return cleaned_data.to_dict('records')
@@ -80,6 +82,8 @@ def update_grid(selected_genre):
     # Filter data based on selected genre
     filtered_data = cleaned_data[cleaned_data['Genres'].str.contains(selected_genre, case=False, na=False)]
     return filtered_data.to_dict('records')
+
+
 
 # Run the Dash app
 if __name__ == '__main__':

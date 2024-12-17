@@ -10,7 +10,7 @@ def get_constants(df):
     artists = df['Artist(s)'].str.split(',').explode().value_counts().index
     num_of_artists = len(artists)
 
-    length = df['Length'].str.split(',').explode().value_counts().index
+    length = df['total_seconds']
     num_of_length = len(artists)
 
     producers = df['Producers'].str.split(',').explode().value_counts().index
