@@ -4,7 +4,7 @@ import pandas as pd
 import pathlib
 
 # Load the dataset
-csv_path = pathlib.Path("/Users/karinachristensen/Documents/SDU/DS831/data/html_cleaned.csv")
+csv_path = pathlib.Path("../data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 
 # Define column definitions based on your dataset
