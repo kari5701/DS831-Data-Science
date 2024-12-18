@@ -2,11 +2,10 @@ from dash import Dash, html, dcc, Input, Output
 import pandas as pd
 import pathlib
 
-# Import WordCloud-komponent og grid
-from dash_ui.src.dash2 import create_wordcloud
 from src.const import clean_genres, KEYWORDS
 from src.dash1 import create_grid
-from src.dash4 import create_wordcloud_component
+from src.dash2 import create_histogram
+from src.dash3 import create_wordcloud
 
 # Load the CSV file into a DataFrame
 csv_path = pathlib.Path("../data/html_cleaned.csv")
@@ -61,8 +60,11 @@ app.layout = html.Div([
         className="mb-5 p-2 border border-gray-300 rounded w-full",
     ),
 
+    html.Div(create_histogram(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
+
     # WordCloud Component
     html.Div(create_wordcloud(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md")
+
 ], className="container mx-auto p-6 bg-gray-50")
 
 # Define callback to update AgGrid based on dropdown or WordCloud click
@@ -85,7 +87,7 @@ def update_grid(selected_genre, clickData):
         if selected_word:
             filtered_data = filtered_data[filtered_data['Genres'].str.contains(selected_word, case=False, na=False)]
 
-    # Håndter tomme data
+    # NaN values
     if filtered_data.empty:
         return []
 

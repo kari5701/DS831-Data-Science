@@ -21,11 +21,11 @@ columnDefs = [
 
 # Default column definition for common properties
 defaultColDef = {
-    "filter": True,  # Enables filtering for all columns
-    "floatingFilter": True,  # Adds a quick filter bar below the header
-    "sortable": True,  # Enables sorting for all columns
-    "wrapHeaderText": True,  # Wraps header text if it's too long
-    "autoHeaderHeight": True,  # Automatically adjusts header height
+    "filter": True,
+    "floatingFilter": True,
+    "sortable": True,
+    "wrapHeaderText": True,
+    "autoHeaderHeight": True,
     "initialWidth": True,
     "resizable": True,
 }
@@ -34,9 +34,9 @@ defaultColDef = {
 def create_grid(data):
     grid = dag.AgGrid(
         id="getting-started-sort",
-        rowData=data.to_dict("records"),  # Convert DataFrame to list of dictionaries
-        columnDefs=columnDefs,  # Use the updated column definitions
-        defaultColDef=defaultColDef,  # Apply the default column settings
+        rowData=data.to_dict("records"),
+        columnDefs=columnDefs,
+        defaultColDef=defaultColDef,
         dashGridOptions={'pagination': True,
                          'paginationPageSize': 10
         },
