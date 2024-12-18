@@ -6,6 +6,7 @@ import pathlib
 from dash_ui.src.dash2 import create_wordcloud
 from src.const import clean_genres, KEYWORDS
 from src.dash1 import create_grid
+from src.dash4 import create_wordcloud_component
 
 # Load the CSV file into a DataFrame
 csv_path = pathlib.Path("../data/html_cleaned.csv")
