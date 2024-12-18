@@ -11,6 +11,7 @@ from src.dash4 import create_wordcloud_component
 # Load the CSV file into a DataFrame
 csv_path = pathlib.Path("../data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
+cleaned_data['Genres'] = cleaned_data['Genres'].fillna("")
 
 # Genre List
 GENRES = clean_genres(cleaned_data, KEYWORDS)
@@ -75,12 +76,18 @@ def update_grid(selected_genre, clickData):
 
     # Filter by dropdown selection
     if selected_genre:
-        filtered_data = filtered_data[filtered_data['Genres'].str.contains(selected_genre, case=False, na=False)]
+        regex_pattern = '|'.join(selected_genre)
+        filtered_data = filtered_data[filtered_data['Genres'].str.contains(regex_pattern, case=False, na=False)]
 
     # Filter by WordCloud click
-    if clickData:
-        selected_word = clickData['points'][0]['text']
-        filtered_data = filtered_data[filtered_data['Genres'].str.contains(selected_word, case=False, na=False)]
+    if clickData and 'points' in clickData:
+        selected_word = clickData['points'][0].get('text', '')
+        if selected_word:
+            filtered_data = filtered_data[filtered_data['Genres'].str.contains(selected_word, case=False, na=False)]
+
+    # Håndter tomme data
+    if filtered_data.empty:
+        return []
 
     return filtered_data.to_dict('records')
 

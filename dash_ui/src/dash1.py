@@ -37,7 +37,9 @@ def create_grid(data):
         rowData=data.to_dict("records"),  # Convert DataFrame to list of dictionaries
         columnDefs=columnDefs,  # Use the updated column definitions
         defaultColDef=defaultColDef,  # Apply the default column settings
-        dashGridOptions={'pagination': True},
+        dashGridOptions={'pagination': True,
+                         'paginationPageSize': 10
+        },
     )
     return html.Div(
         [grid],
