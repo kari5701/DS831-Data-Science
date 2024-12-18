@@ -43,15 +43,15 @@ def generate_wordcloud_scatter(genre_counts, max_words=50):
         text=words,
         textfont={'size': sizes, 'color': 'black'},  # Adjusted text color and scaled size
         hoverinfo='text'
-    )
+   )
 
     layout = go.Layout(
-        xaxis={'showgrid': False, 'showticklabels': False, 'zeroline': False},
-        yaxis={'showgrid': False, 'showticklabels': False, 'zeroline': False},
-        margin=dict(l=0, r=0, t=0, b=0),
-        height=600,
-        plot_bgcolor='rgba(255, 255, 255, 0)',  # Set background to transparent
-        paper_bgcolor='rgba(255, 255, 255, 0)',  # Set paper background to transparent
+        xaxis_visible=False,  # Hides grid, ticks, and zero lines for X-axis
+    yaxis_visible=False,  # Hides grid, ticks, and zero lines for Y-axis
+    margin=dict(l=0, r=0, t=0, b=0),  # Removes plot margins
+    height=600,  # Set figure height
+    paper_bgcolor='white',  # Background color (can be changed as needed)
+    plot_bgcolor='white'    # Plot area background color
     )
 
     return go.Figure(data=[wordcloud], layout=layout)
