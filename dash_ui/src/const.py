@@ -1,6 +1,10 @@
+import pathlib
+
 KEYWORDS = ['pop', 'r&b', 'rock', 'soul', 'hip hop', 'disco', 'funk',
-            'country', 'electro', 'trap', 'blue', 'folk', 'metal',
+            'country', 'electro', 'trap', 'blues', 'folk', 'metal',
             'gospel', 'dance', 'jazz', 'house']
+
+CSV_PATH = pathlib.Path("data/html_cleaned.csv")
 
 def clean_genres(df, keywords):
 

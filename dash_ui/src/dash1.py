@@ -4,7 +4,7 @@ import pandas as pd
 import pathlib
 
 # Load the dataset
-csv_path = pathlib.Path("../data/html_cleaned.csv")
+csv_path = pathlib.Path("data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 
 # Define column definitions based on your dataset
@@ -38,7 +38,7 @@ def create_grid(data):
         columnDefs=columnDefs,  # Use the updated column definitions
         defaultColDef=defaultColDef,  # Apply the default column settings
         dashGridOptions={'pagination': True,
-                         'paginationPageSize': 10
+                         'paginationPageSize': 25
         },
     )
     return html.Div(
