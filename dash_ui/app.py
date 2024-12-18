@@ -4,11 +4,11 @@ import pathlib
 
 from src.const import clean_genres, KEYWORDS
 from src.dash1 import create_grid
-from src.dash2 import create_histogram
+from src.dash2 import create_histogram, create_genre_histogram
 from src.dash3 import create_wordcloud
 
 # Load the CSV file into a DataFrame
-csv_path = pathlib.Path("../data/html_cleaned.csv")
+csv_path = pathlib.Path("data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 cleaned_data['Genres'] = cleaned_data['Genres'].fillna("")
 
@@ -60,7 +60,9 @@ app.layout = html.Div([
         className="mb-5 p-2 border border-gray-300 rounded w-full",
     ),
 
-    html.Div(create_histogram(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
+    html.Div(create_histogram(cleaned_data['total_seconds']), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
+
+    html.Div(create_genre_histogram(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
 
     # WordCloud Component
     html.Div(create_wordcloud(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md")

@@ -13,7 +13,7 @@ def prepare_histogram_data(df, keywords):
     return pd.DataFrame({'Genre': genres}).value_counts().reset_index(name='Count')
 
 # Funktion til at lave histogram
-def create_histogram(data, keywords):
+def create_genre_histogram(data, keywords):
     histogram_data = prepare_histogram_data(data, keywords)
 
     fig = px.bar(
@@ -37,3 +37,25 @@ def create_histogram(data, keywords):
     )
 
     return dcc.Graph(id="histogram-graph", figure=fig)
+
+
+
+# Function to create a histogram layout
+def create_histogram(data):
+    fig = px.histogram(
+        data,
+        x="total_seconds",
+        labels={"Length": "Song Length (seconds)"},
+        title="Distribution of Song Lengths",
+        marginal="rug",
+    )
+    fig.update_layout(
+        xaxis_title="Length (seconds)",
+        yaxis_title="Number of Songs",
+        clickmode="event+select"  # Enable click events
+    )
+    # Return the layout for the histogram
+    return dcc.Graph(
+        id="length-histogram",
+        figure=fig
+    )
