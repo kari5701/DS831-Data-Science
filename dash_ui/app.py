@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Input, Output, ctx
+from dash import Dash, html, dcc, Input, Output, ctx, callback
 import pandas as pd
 import pathlib
 
@@ -15,6 +15,7 @@ cleaned_data['Genres'] = cleaned_data['Genres'].fillna("")
 # Genre List
 GENRES = clean_genres(cleaned_data, KEYWORDS)
 
+
 # Initialize the Dash app
 app = Dash(__name__)
 
@@ -25,8 +26,6 @@ app.layout = html.Div([
         html.Div(html.Img(src="./assets/Billboard_logo.png", width=150), className="w-1/6"),
         html.H1(style={'color': 'white', 'textAlign': 'center'}, children='Billboard Analysis'),
     ]),
-    html.Button("Default Size", id="grid-size-default-size"),
-    html.Button("Change Size", id="grid-size-change-size"),
     # Grid Component
     html.Div(create_grid(cleaned_data)),
 
@@ -57,28 +56,14 @@ app.layout = html.Div([
 
 ])
 
-# Callback to change sice of grid:
-@app.callback(
-    Output("getting-started-sort", "style"),
-    Input("grid-size-default-size", "n_clicks"),
-    Input("grid-size-change-size", "n_clicks"),
-    prevent_initial_call=True,
-)
-def change_size(*_):
-    if ctx.triggered_id == "grid-size-default-size":
-        return {"height": 400, "width": "100%"}
-    return {"height": 600, "width": 400}
 
+# define callback functions:
 
-
-# Define callback to update AgGrid based on dropdown or WordCloud click
-@app.callback(
+#  allback to update AgGrid based on dropdown or WordCloud click
+@callback(
     Output("getting-started-sort", 'rowData'),
     [Input('genre-dropdown', 'value'),
-     Input("wordcloud-graph", "clickData"),
-     Input("genre-histogram", ""),
-     Input("length-histogram", "")
-     ]
+     Input("wordcloud-graph", "clickData")]
 )
 def update_grid(selected_genre, clickData):
     filtered_data = cleaned_data
@@ -100,6 +85,7 @@ def update_grid(selected_genre, clickData):
 
     return filtered_data.to_dict('records')
 
+
 # Run the Dash app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=8051)

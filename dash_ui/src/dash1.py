@@ -24,13 +24,15 @@ columnDefs = [
 # Function to create a grid layout
 def create_grid(data):
     grid = dag.AgGrid(
+        style={"height": 800},
         id="getting-started-sort",
         rowData=data.to_dict("records"),
         columnDefs=columnDefs,
         columnSize="sizeToFit",
         defaultColDef={"filter": True},
-        dashGridOptions={'pagination': True,
-                         'paginationPageSize': 10
+        dashGridOptions={'animateRows': False,
+                         'pagination': True,
+                         'paginationPageSize': 18
         },
     )
     return html.Div(
