@@ -52,10 +52,8 @@ def create_histogram(data):
     fig.update_layout(
         xaxis_title="Length (seconds)",
         yaxis_title="Number of Songs",
-        clickmode="event+select"  # Enable click events
+        clickmode="event+select"
     )
-    # Return the layout for the histogram
     return dcc.Graph(
-        id="length-histogram",
         figure=fig
     )

@@ -60,12 +60,20 @@ app.layout = html.Div([
         className="mb-5 p-2 border border-gray-300 rounded w-full",
     ),
 
-    html.Div(create_histogram(cleaned_data['total_seconds']), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
+    # Length histogram Component
+    html.Div(create_histogram(cleaned_data['total_seconds']), 
+             id='length-histogram',
+             className="mb-10 p-4 bg-white rounded-lg shadow-md"),
 
-    html.Div(create_genre_histogram(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
+    # Genre histogram Component
+    html.Div(create_genre_histogram(cleaned_data, KEYWORDS),
+             id='genre-histogram', 
+             className="mb-10 p-4 bg-white rounded-lg shadow-md"),
 
     # WordCloud Component
-    html.Div(create_wordcloud(cleaned_data, KEYWORDS), className="mb-10 p-4 bg-white rounded-lg shadow-md")
+    html.Div(create_wordcloud(cleaned_data, KEYWORDS), 
+             id='wordcloud-graph',
+             className="mb-10 p-4 bg-white rounded-lg shadow-md")
 
 ], className="container mx-auto p-6 bg-gray-50")
 
@@ -73,7 +81,10 @@ app.layout = html.Div([
 @app.callback(
     Output("getting-started-sort", 'rowData'),
     [Input('genre-dropdown', 'value'),
-     Input("wordcloud-graph", "clickData")]
+     Input("wordcloud-graph", "clickData"),
+     Input("genre-histogram", ""),
+     Input("length-histogram", "")
+     ]
 )
 def update_grid(selected_genre, clickData):
     filtered_data = cleaned_data
