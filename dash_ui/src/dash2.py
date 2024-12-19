@@ -12,7 +12,7 @@ def prepare_histogram_data(df, keywords):
                     genres.append(keyword.capitalize())
     return pd.DataFrame({'Genre': genres}).value_counts().reset_index(name='Count')
 
-# Funktion til at lave histogram
+# Function to create genre histogram
 def create_genre_histogram(data, keywords):
     histogram_data = prepare_histogram_data(data, keywords)
 
@@ -40,7 +40,7 @@ def create_genre_histogram(data, keywords):
 
 
 
-# Function to create a histogram layout
+# Function to create length histogram
 def create_histogram(data):
     fig = px.histogram(
         data,

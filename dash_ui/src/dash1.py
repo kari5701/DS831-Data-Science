@@ -1,4 +1,3 @@
-from dash import html
 import dash_ag_grid as dag
 import pandas as pd
 import pathlib
@@ -18,9 +17,6 @@ columnDefs = [
     {'field': 'Songwriters', 'headerName': 'Songwriters'},
     {'field': 'Producers', 'headerName': 'Producers'},
 ]
-
-# Default column definition for common properties
-
 # Function to create a grid layout
 def create_grid(data):
     grid = dag.AgGrid(
@@ -29,12 +25,18 @@ def create_grid(data):
         rowData=data.to_dict("records"),
         columnDefs=columnDefs,
         columnSize="sizeToFit",
-        defaultColDef={"filter": True},
+        defaultColDef={
+            "filter": True,
+            "floatingFilter": True,
+            "sortable": True,
+            "wrapHeaderText": True,
+            "autoHeaderHeight": True,
+            "initialWidth": True,
+            "resizable": True,
+            },
         dashGridOptions={'animateRows': False,
                          'pagination': True,
                          'paginationPageSize': 18
         },
     )
-    return html.Div(
-        [grid],
-    )
+    return grid

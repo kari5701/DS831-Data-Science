@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Input, Output, ctx, callback
+from dash import Dash, html, dcc, Input, Output, callback
 import pandas as pd
 import pathlib
 
@@ -55,7 +55,6 @@ app.layout = html.Div([
         )
 
 ])
-
 
 # define callback functions:
 

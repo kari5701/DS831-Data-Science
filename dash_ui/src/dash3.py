@@ -3,7 +3,6 @@ import pandas as pd
 import plotly.graph_objs as go
 import numpy as np
 import random
-from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
 # Preprocess the genres
@@ -16,25 +15,6 @@ def prepare_wordcloud_data(df, keywords):
                     genres.append(keyword.capitalize())
     return pd.DataFrame({'Genre': genres}).value_counts().reset_index(name='Count')
     
-
-# def create_wordcloud(data):
-    
-#     text = data.to_string()
-        
-#     # Generate a word cloud image
-#     wordcloud = WordCloud().generate(text)
-
-#     plt.imshow(wordcloud, interpolation='bilinear')
-#     plt.axis("off")
-
-#     # lower max_font_size
-#     wordcloud = WordCloud(max_font_size=40).generate(text)
-#     plt.figure()
-#     plt.imshow(wordcloud, interpolation="bilinear")
-#     plt.axis("off")
-#     return plt.show()
-
-
 # Wordcloud generation using Plotly
 
 def create_wordcloud(data, keywords):

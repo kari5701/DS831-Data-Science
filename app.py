@@ -2,9 +2,8 @@ from dash import Dash, html, dcc, Input, Output, callback
 import pandas as pd
 import pathlib
 import dash_ag_grid as dag
-from src.const import clean_genres, KEYWORDS
-from src.dash1 import columnDefs
-from src.viz import create_grid, create_length_histogram, create_genre_histogram, create_wordcloud
+from src.Constants import clean_genres, KEYWORDS, columnDefs
+from src.Viz_functions import create_length_histogram, create_genre_histogram, create_wordcloud
 
 
 # Load the CSV file into a DataFrame
@@ -21,10 +20,22 @@ app = Dash(__name__)
 # Define app layout
 app.layout = html.Div([
     # Header
-    html.Div([
-        html.Div(html.Img(src="./assets/Billboard_logo.png", width=150), className="w-1/6"),
-        html.H1(style={'color': 'white', 'textAlign': 'center'}, children='Billboard Analysis'),
-    ]),
+    html.Div(
+        [
+        html.Div(html.Img(src="assets/Billboard_logo.png", width=300, style={
+            'padding': '10px'
+            }
+                          )
+                 ),
+        html.H1('Analysis', style={
+            'color': 'black', 
+            'fontFamily': 'Arial, sans-serif',
+            'backgroundColor': 'white',
+            'padding': '10px'
+            }
+                )
+        ]
+             ),
     
     # Grid Component
     dag.AgGrid(
@@ -52,6 +63,7 @@ app.layout = html.Div([
     # Dropdown for Genres
     dcc.Dropdown(
         id='genre-dropdown',
+        style={'fontFamily': 'Arial, sans-serif'},
         options=[{'label': genre, 'value': genre} for genre in GENRES],
         placeholder='Select a genre',
         multi=True,
