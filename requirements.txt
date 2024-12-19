@@ -1,0 +1,6 @@
+dash
+dash-ag-grid
+pandas
+beautifulsoup4
+plotly
+numpy

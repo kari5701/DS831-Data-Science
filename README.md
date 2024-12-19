@@ -42,7 +42,6 @@ The project consists of two main components:
 To run the project, ensure the following tools are installed:
 
 - Python 3.8+
-- Required libraries: `BeautifulSoup`, `requests`, `pandas`, 'pathlib', 're'.
 
 ## Setup and Usage
 
@@ -66,3 +65,11 @@ To run the project, ensure the following tools are installed:
   This script usees the Beautifull Soup function from `function_artist.py` to gather the following data: `name`, `artist(s)`, `relase date`, `genres`, `length`, `label`, `songwriters`, `producers', 'composers' and 'lyricists'. The data is saved into a `.csv` file.
 
   For data cleaning, `scrape.py` imports functionality from `function_dataclean.py` at the bottom of the code.
+
+The UI Dashboard is set up to Tailwind CSS, if Node.JS is already installed on your computer enter:
+
+```bash
+pip i
+```
+
+If you don't have Node.JS on your computer, go follow the Tailwind CSS documentation to get started with Tailwind CSS: https://tailwindcss.com/docs/installation
