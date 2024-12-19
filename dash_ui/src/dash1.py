@@ -20,15 +20,6 @@ columnDefs = [
 ]
 
 # Default column definition for common properties
-defaultColDef = {
-    "filter": True,
-    "floatingFilter": True,
-    "sortable": True,
-    "wrapHeaderText": True,
-    "autoHeaderHeight": True,
-    "initialWidth": True,
-    "resizable": True,
-}
 
 # Function to create a grid layout
 def create_grid(data):
@@ -36,12 +27,12 @@ def create_grid(data):
         id="getting-started-sort",
         rowData=data.to_dict("records"),
         columnDefs=columnDefs,
-        defaultColDef=defaultColDef,
+        columnSize="sizeToFit",
+        defaultColDef={"filter": True},
         dashGridOptions={'pagination': True,
                          'paginationPageSize': 10
         },
     )
     return html.Div(
         [grid],
-        className="p-4 sm:p-2 md:p-6 bg-gray-100 flex flex-col items-center"
     )
