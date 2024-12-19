@@ -18,35 +18,13 @@ GENRES = clean_genres(cleaned_data, KEYWORDS)
 # Initialize the Dash app
 app = Dash(__name__)
 
-app.index_string = '''
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Billboard Hot 100</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Syne:wght@400..800&display=swap" rel="stylesheet">
-</head>
-<body class="bg-gray-100 font-sans">
-    <div id="react-entry-point">
-        {%app_entry%}
-    </div>
-    <footer>
-        {%config%}
-        {%scripts%}
-        {%renderer%}
-    </footer>
-</body>
-</html>
-'''
-
 # Define app layout
 app.layout = html.Div([
     # Header
     html.Div([
         html.Div(html.Img(src="./assets/Billboard_logo.png", width=150), className="w-1/6"),
-        html.H1("Billboard Artist Hot 100", className="text-3xl font-bold mb-4 text-center text-gray-800"),
-    ], className="flex items-center space-x-4 mb-10 bg-white p-4 rounded-lg shadow-md"),
+        html.H1(style={'color': 'white', 'textAlign': 'center'}, children='Billboard Analysis'),
+    ]),
 
     # Grid Component
     html.Div(create_grid(cleaned_data), className="mb-10 p-4 bg-white rounded-lg shadow-md"),
@@ -57,25 +35,26 @@ app.layout = html.Div([
         options=[{'label': genre, 'value': genre} for genre in GENRES],
         placeholder='Select a genre',
         multi=True,
-        className="mb-5 p-2 border border-gray-300 rounded w-full",
-    ),
+        ),
 
     # Length histogram Component
-    html.Div(create_histogram(cleaned_data['total_seconds']), 
-             id='length-histogram',
-             className="mb-10 p-4 bg-white rounded-lg shadow-md"),
+    html.Div(create_histogram(
+        cleaned_data['total_seconds']), 
+        id='length-histogram',
+        ),
 
     # Genre histogram Component
-    html.Div(create_genre_histogram(cleaned_data, KEYWORDS),
-             id='genre-histogram', 
-             className="mb-10 p-4 bg-white rounded-lg shadow-md"),
+    html.Div(create_genre_histogram(
+        cleaned_data, KEYWORDS),
+        id='genre-histogram', 
+        ),
 
     # WordCloud Component
     html.Div(create_wordcloud(cleaned_data, KEYWORDS), 
-             id='wordcloud-graph',
-             className="mb-10 p-4 bg-white rounded-lg shadow-md")
+        id='wordcloud-graph',
+        )
 
-], className="container mx-auto p-6 bg-gray-50")
+])
 
 # Define callback to update AgGrid based on dropdown or WordCloud click
 @app.callback(
