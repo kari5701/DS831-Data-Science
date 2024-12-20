@@ -1,8 +1,8 @@
 from dash import Dash, html, dcc, Input, Output, callback
 import pandas as pd
 import dash_ag_grid as dag
-from src.Constants import csv_path, clean_genres, KEYWORDS, columnDefs
-from src.Viz_functions import create_length_histogram, create_genre_histogram, create_wordcloud
+from src.const import csv_path, clean_genres, KEYWORDS, columnDefs
+from src.viz_functions import create_length_histogram, create_genre_histogram, create_wordcloud
 
 
 # Load the CSV file into a DataFrame.

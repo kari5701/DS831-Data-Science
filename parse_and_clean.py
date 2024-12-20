@@ -1,6 +1,6 @@
 import pathlib
 import pandas as pd
-from src.Artist_Parse_func import song_details
+from src.artist_parse_func import song_details
 import re
 
 # HTML Directory
