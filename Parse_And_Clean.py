@@ -3,35 +3,32 @@ import pandas as pd
 from src.Artist_Parse_func import song_details
 import re
 
-'''Comment out from here to test second part'''
+# HTML Directory
+directory_path = pathlib.Path('billboard_articles')
 
-# # HTML Directory
-# directory_path = pathlib.Path('billboard_articles')
+# Collect all song details
+all_song_details = []
+for filepath in directory_path.glob('*.html'):
+    details = song_details(filepath)
+    all_song_details.append(details)
+    print(f"Extracted data for: {filepath.name}")
 
-# # Collect all song details
-# all_song_details = []
-# for filepath in directory_path.glob('*.html'):
-#     details = song_details(filepath)
-#     all_song_details.append(details)
-#     print(f"Extracted data for: {filepath.name}")
+# Option to name output CSV with an extension
+csv_name = "html_scrape.csv"
 
-# # Option to name output CSV with an extension
-# csv_name = "html_scrape.csv"
+# Create filepath for saving CSV
+csv_path = pathlib.Path("data") / csv_name
 
-# # Create filepath for saving CSV
-# csv_path = pathlib.Path("data") / csv_name
-
-# # Save results to a CSV file in the correct directory
-# df = pd.DataFrame(all_song_details)
-# csv_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure 'data' directory exists
-# df.to_csv(csv_path, index=False)
-
-
-'''Comment out to here to test second part''' 
+# Save results to a CSV file in the correct directory
+df = pd.DataFrame(all_song_details)
+csv_path.parent.mkdir(parents=True, exist_ok=True) 
+df.to_csv(csv_path, index=False)
 
 
 # Filepath for the existing file
 csv_path = pathlib.Path("data/html_scrape.csv")
+
+
 
 # Import existing scrape CSV as DataFrame
 df = pd.read_csv(csv_path, encoding='utf-8')

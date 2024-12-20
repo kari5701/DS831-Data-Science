@@ -1,13 +1,11 @@
 from dash import Dash, html, dcc, Input, Output, callback
 import pandas as pd
-import pathlib
 import dash_ag_grid as dag
-from src.Constants import clean_genres, KEYWORDS, columnDefs
+from src.Constants import csv_path, clean_genres, KEYWORDS, columnDefs
 from src.Viz_functions import create_length_histogram, create_genre_histogram, create_wordcloud
 
 
 # Load the CSV file into a DataFrame
-csv_path = pathlib.Path("data/html_cleaned.csv")
 cleaned_data = pd.read_csv(csv_path)
 cleaned_data['Genres'] = cleaned_data['Genres'].fillna("")
 
