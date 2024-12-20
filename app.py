@@ -17,6 +17,7 @@ GENRES = clean_genres(cleaned_data, KEYWORDS)
 # Initialize the Dash app
 app = Dash(__name__)
 
+
 # Define app layout
 app.layout = html.Div([ #main container
     html.Div( # header container
