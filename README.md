@@ -26,7 +26,7 @@ To run the project, ensure the following tools are installed:
 4. Parsing the HTML files and cleaning the data:
    ```bash
    python parse_and_clean.py
-  This script usees the Beautifull Soup function from `artist_parse_func.py` to gather the following data: `name`, `artist(s)`, `relase date`, `genres`, `length`, `label`, `songwriters`, `producers`, `composers` and `lyricists`. The data is saved into a `.csv` file.
+  This script usees the Beautifull Soup function from `artist_parse_func.py` to gather the following data: `name`, `artist(s)`, `relase date`, `genres`, `length`, `label`, `songwriters`, `producers`, `composers` and `lyricists`. Columns are then cleaned using extract and replace.str. DataTypes are convertet The data is saved into a `.csv` file.
 
 5. Dashboard UI 
     ```bash
