@@ -1,9 +1,6 @@
-import pathlib
 import pandas as pd
 
-
-csv_path = pathlib.Path("data/html_cleaned.csv")
-cleaned_data = pd.read_csv(csv_path)
+csv_path = pd.read_csv("data/html_cleaned.csv")
 
 KEYWORDS = ['pop', 'r&b', 'rock', 'soul', 'hip hop', 'disco', 'funk',
             'country', 'electro', 'trap', 'blues', 'folk', 'metal',
