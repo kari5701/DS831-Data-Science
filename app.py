@@ -18,16 +18,15 @@ GENRES = clean_genres(cleaned_data, KEYWORDS)
 app = Dash(__name__)
 
 # Define app layout
-app.layout = html.Div([
-    # Header
-    html.Div(
+app.layout = html.Div([ #main container
+    html.Div( # header container
         [
-        html.Div(html.Img(src="assets/Billboard_logo.png", width=300, style={
+        html.Div(html.Img(src="assets/Billboard_logo.png", width=300, style={ #Logo
             'padding': '10px'
             }
                           )
                  ),
-        html.H1('Analysis', style={
+        html.H1('Analysis', style={ #H1 text
             'color': 'black', 
             'fontFamily': 'Arial, sans-serif',
             'backgroundColor': 'white',
@@ -46,10 +45,8 @@ app.layout = html.Div([
         columnSize="sizeToFit",
         defaultColDef={
             "filter": True,
-            "floatingFilter": True,
             "sortable": True,
             "wrapHeaderText": True,
-            "autoHeaderHeight": True,
             "initialWidth": True,
             "resizable": True,
             },
@@ -68,6 +65,12 @@ app.layout = html.Div([
         placeholder='Select a genre',
         multi=True,
         value=[]
+        ),
+    html.Div([
+        html.Div(id='output'),
+        html.Button('Input',id='input_button',n_clicks=0),
+        html.Button('Reset',id='reset_button', n_clicks=0),
+        ], style={'marginTop':20, 'marginLeft':20}
         ),
     
     # histogram container with better spacing and layout
@@ -103,64 +106,48 @@ app.layout = html.Div([
 
 # define callback functions:
 
-#  allback to update AgGrid based on dropdown or WordCloud click
+
+# The one callback-funcion to update by genre:
 @callback(
-    Output("song-grid", "rowData"),
-    [Input('genre-dropdown', 'value'),
-     Input("wordcloud-graph", "clickData")]  # Updated to match new ID
+    [
+        Output("song-grid", "rowData"),
+        Output("length-histogram", "figure"),
+        Output("genre-histogram", "figure"),
+        Output("wordcloud-graph", "figure"),
+        Output("genre-dropdown", "value"),
+    ],
+    [
+        Input('genre-dropdown', 'value'),
+        Input("wordcloud-graph", "clickData"),
+    ]
 )
-def update_grid(selected_genres, clickData):
+def update_all(selected_genres, clickData):
     filtered_data = cleaned_data.copy()
-    
+
+    # Filter by selected genres from dropdown
     if selected_genres and len(selected_genres) > 0:
         regex_pattern = '|'.join(selected_genres)
         filtered_data = filtered_data[filtered_data['Genres'].str.contains(regex_pattern, case=False, na=False)]
-    
+
+    # filter by word clicked in the word cloud
+    selected_word = ""
     if clickData and 'points' in clickData and len(clickData['points']) > 0:
         selected_word = clickData['points'][0].get('text', '')
         if selected_word:
             filtered_data = filtered_data[filtered_data['Genres'].str.contains(selected_word, case=False, na=False)]
-    
-    return filtered_data.to_dict('records')
 
-@callback(
-    Output("length-histogram", "figure"),
-    Input('genre-dropdown', 'value')
-)
-def update_length_histogram(selected_genres):
-    filtered_data = cleaned_data.copy()
-    
-    if selected_genres and len(selected_genres) > 0:
-        regex_pattern = '|'.join(selected_genres)
-        filtered_data = filtered_data[filtered_data['Genres'].str.contains(regex_pattern, case=False, na=False)]
-    
-    return create_length_histogram(filtered_data)
+    # Update dropdown value if a word is selected
+    if selected_word and selected_word not in selected_genres:
+        selected_genres = selected_genres + [selected_word] if selected_genres else [selected_word]
 
-@callback(
-    Output("genre-histogram", "figure"),
-    Input('genre-dropdown', 'value')
-)
-def update_genre_histogram(selected_genres):
-    filtered_data = cleaned_data.copy()
-    
-    if selected_genres and len(selected_genres) > 0:
-        regex_pattern = '|'.join(selected_genres)
-        filtered_data = filtered_data[filtered_data['Genres'].str.contains(regex_pattern, case=False, na=False)]
-    
-    return create_genre_histogram(filtered_data, KEYWORDS)
+    row_data = filtered_data.to_dict("records")
+    length_histogram = create_length_histogram(filtered_data)
+    genre_histogram = create_genre_histogram(filtered_data, KEYWORDS)
+    wordcloud = create_wordcloud(filtered_data, KEYWORDS)
 
-@callback(
-    Output("wordcloud-graph", "figure"),
-    Input('genre-dropdown', 'value')
-)
-def update_wordcloud(selected_genres):
-    filtered_data = cleaned_data.copy()
-    
-    if selected_genres and len(selected_genres) > 0:
-        regex_pattern = '|'.join(selected_genres)
-        filtered_data = filtered_data[filtered_data['Genres'].str.contains(regex_pattern, case=False, na=False)]
-    
-    return create_wordcloud(filtered_data, KEYWORDS)
+    return row_data, length_histogram, genre_histogram, wordcloud, selected_genres
+
+selected_word = ""
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8055)
