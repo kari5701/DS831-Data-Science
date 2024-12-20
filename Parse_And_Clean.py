@@ -1,9 +1,7 @@
 import pathlib
 import pandas as pd
-from function_artist import song_details
+from src.Artist_Parse_func import song_details
 import re
-from datetime import time
-from datetime import datetime
 
 '''Comment out from here to test second part'''
 
@@ -29,9 +27,7 @@ from datetime import datetime
 # df.to_csv(csv_path, index=False)
 
 
-
 '''Comment out to here to test second part''' 
-
 
 
 # Filepath for the existing file
