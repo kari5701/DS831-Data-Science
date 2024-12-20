@@ -5,7 +5,7 @@ from src.Constants import csv_path, clean_genres, KEYWORDS, columnDefs
 from src.Viz_functions import create_length_histogram, create_genre_histogram, create_wordcloud
 
 
-# Load the CSV file into a DataFrame
+# Load the CSV file into a DataFrame.
 cleaned_data = pd.read_csv(csv_path)
 cleaned_data['Genres'] = cleaned_data['Genres'].fillna("")
 
