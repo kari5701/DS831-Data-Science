@@ -2,6 +2,8 @@
 
 This repository contains the implementation for **Project 1** of the DS831 course, focused on working with data from Billboard Hot 100 number-one singles scraped from Wikipedia.
 
+The repository is pubplic on GitHub: https://github.com/kari5701/DS831-Data-Science
+
 ## Prerequisites
 
 To run the project, ensure the following tools are installed:
