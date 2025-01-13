@@ -82,22 +82,30 @@ print(f'"{df_backup.iloc[14,2]}" cleaned to: \n"{df.iloc[14,2]}" and so on..\n')
 ## Clean song "lengths" column
 print('Cleaning the "Length" column:')
 
-# extract single version length or the first time match
-df['Length'] = df['Length'].str.extract(r'(\d+:\d+)\s*\(.*?single version.*?\)', re.IGNORECASE)[0].fillna(
-    df['Length'].str.extract(r'(\d+:\d+)')[0].fillna(df['Length']))
+# extract Radio Edit, SingleVersion and the first occuring version length in string.
+df['RadioEditLength'] = df['Length'].str.extract(r'(\d+:\d+).{1,10}radio', flags=re.IGNORECASE)
+df['SingleVersionLength'] = df['Length'].str.extract(r'(\d+:\d+).{1,10}single', flags=re.IGNORECASE)
+df['FirstVersionLength'] = df['Length'].str.extract(r'(\d+:\d+)')
 
+# Prioritize between the three new columns. FIrst of highest priority.
+df['Length'] = df[['RadioEditLength', 'SingleVersionLength', 'FirstVersionLength']].bfill(axis=1).iloc[:, 0]
 
-# Standardize all time to ISO 8601 format with to_datetime
-df['total_seconds'] = pd.to_datetime(df['Length'], format='%M:%S', errors='coerce')
-
-df['Minutes'] = df.total_seconds.dt.minute
-df['Seconds'] = df.total_seconds.dt.second
-
-df['total_seconds'] = df['Minutes']*60 + df['Seconds']
-
-df = df.drop(columns=['Minutes', 'Seconds'])
+#Drop irrelevant columns.
+df = df.drop(columns=['RadioEditLength', 'SingleVersionLength', 'FirstVersionLength'])
 
 print(f'"{df_backup.iloc[8,4]}" cleaned to: \n"{df.iloc[8,4]}" and so on..\n')
+
+# Standardize all time to ISO 8601 format with to_datetime
+# df['total_seconds'] = pd.to_datetime(df['Length'], format='%M:%S', errors='coerce')
+
+# df['Minutes'] = df.total_seconds.dt.minute
+# df['Seconds'] = df.total_seconds.dt.second
+
+# df['total_seconds'] = df['Minutes']*60 + df['Seconds']
+
+# df = df.drop(columns=['Minutes', 'Seconds'])
+
+# print(f'"{df_backup.iloc[8,4]}" cleaned to: \n"{df.iloc[8,4]}" and so on..\n')
 
 
 ## Clean the "Genres" column
