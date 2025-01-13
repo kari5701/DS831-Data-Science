@@ -14,6 +14,9 @@ headers = {'User-Agent': user_agent}
 # Directory to save the HTML files
 directory = pathlib.Path('billboard_articles')
 
+directory.mkdir(parents=True, exist_ok=True)
+print(f'directory created at{directory}')
+
 # Collect all song links
 all_songs = []
 

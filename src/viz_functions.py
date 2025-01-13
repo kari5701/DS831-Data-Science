@@ -28,6 +28,7 @@ def create_grid(data):
             "filter": True,
             "floatingFilter": True,
             "sortable": True,
+            "floatingFilter": True,
             "wrapHeaderText": True,
             "autoHeaderHeight": True,
             "initialWidth": True,
