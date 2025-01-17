@@ -4,4 +4,3 @@ pandas
 beautifulsoup4
 plotly
 numpy
-re
