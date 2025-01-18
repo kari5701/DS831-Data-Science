@@ -45,10 +45,12 @@ app.layout = html.Div([ #main container
         defaultColDef={
             "filter": True,
             "sortable": True,
+            "floatingFilter": True,
             "wrapHeaderText": True,
             "initialWidth": True,
             "resizable": True,
             },
+        persistence=True,
         dashGridOptions={
             'animateRows': False,
             'pagination': True,

@@ -28,6 +28,7 @@ import re
 # Filepath for the existing file
 csv_path = "data/html_scrape.csv"
 
+'''Comment out to here to test second part''' 
 
 
 # Import existing scrape CSV as DataFrame
